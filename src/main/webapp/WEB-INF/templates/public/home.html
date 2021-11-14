@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="public/fragments :: html_head">
+    <title>Skillhunt - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<body>
+<nav th:replace="public/fragments :: header_menu" class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+
+</nav>
+<!-- END nav -->
+<div th:if="${msg_register_success}" class="toast" data-delay="2000" style="position:fixed;top: 100PX; right: 10PX;z-index: 2000;width: 300px">
+    <div class="toast-header" style="background-color: #1c7430">
+        <strong class="mr-auto" style="color: white">Thông báo</strong>
+        <small style="color: white">Vừa xong</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="color: white">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body" >
+        <p th:text="'✅ ' +${msg_register_success}"></p>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('.toast').toast('show');
+        });
+    </script>
+</div>
+<div class="hero-wrap img" style="background-image: url(user/assets/images/bg_1.jpg);">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-10 d-flex align-items-center ">
+                <div class="text text-center pt-5 mt-md-5">
+                    <p class="mb-4">Tìm việc làm, Cơ hội việc làm và Nghề nghiệp</p>
+                    <h1 class="mb-5">Cách dễ dàng nhất để có được công việc mới của bạn</h1>
+                    <div class="ftco-counter ftco-no-pt ftco-no-pb">
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-center counter-wrap ">
+                                <div class="block-18">
+                                    <div class="text d-flex">
+                                        <div class="icon mr-2">
+                                            <span class="flaticon-visitor"></span>
+                                        </div>
+                                        <div class="desc text-left">
+                                            <strong class="number" data-number="46" th:text="${numberCandidate}"></strong>
+                                            <span>Ứng cử viên</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-center counter-wrap ">
+                                <div class="block-18 text-center">
+                                    <div class="text d-flex">
+                                        <div class="icon mr-2">
+                                            <span class="flaticon-visitor"></span>
+                                        </div>
+                                        <div class="desc text-left">
+                                            <strong class="number" data-number="450" th:text="${numberCompany}"></strong>
+                                            <span>Công ty</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-center counter-wrap">
+                                <div class="block-18 text-center">
+                                    <div class="text d-flex">
+                                        <div class="icon mr-2">
+                                            <span class="flaticon-resume"></span>
+                                        </div>
+                                        <div class="desc text-left">
+                                            <strong class="number" data-number="80000" th:text="${numberRecruitment}"></strong>
+                                            <span>Tuyển dụng</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ftco-search my-md-5">
+                        <div class="row">
+                            <div class="col-md-12 nav-link-wrap">
+                                <div class="nav nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active mr-md-1" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">Tìm công việc</a>
+
+                                    <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">Tìm ứng cử viên</a>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 tab-wrap">
+
+                                <div class="tab-content p-4" id="v-pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-nextgen-tab">
+                                        <form action="#" class="search-job">
+                                            <div class="row no-gutters">
+                                                <div class="col-md mr-md-2">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <div class="icon"><span class="icon-briefcase"></span></div>
+                                                            <input type="text" class="form-control" placeholder="eg. Garphic. Web Developer">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md mr-md-2">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <div class="select-wrap">
+                                                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                                                <select name="" id="" class="form-control">
+                                                                    <option value="">Category</option>
+                                                                    <option value="">Full Time</option>
+                                                                    <option value="">Part Time</option>
+                                                                    <option value="">Freelance</option>
+                                                                    <option value="">Internship</option>
+                                                                    <option value="">Temporary</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md mr-md-2">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <div class="icon"><span class="icon-map-marker"></span></div>
+                                                            <input type="text" class="form-control" placeholder="Location">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <button type="submit" class="form-control btn btn-primary">Tìm kiếm</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-performance-tab">
+                                        <form action="#" class="search-job">
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <div class="icon"><span class="icon-user"></span></div>
+                                                            <input type="text" class="form-control" placeholder="eg. Adam Scott">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <div class="select-wrap">
+                                                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                                                <select name="" id="" class="form-control">
+                                                                    <option value="">Category</option>
+                                                                    <option value="">Full Time</option>
+                                                                    <option value="">Part Time</option>
+                                                                    <option value="">Freelance</option>
+                                                                    <option value="">Internship</option>
+                                                                    <option value="">Temporary</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <div class="icon"><span class="icon-map-marker"></span></div>
+                                                            <input type="text" class="form-control" placeholder="Location">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-group">
+                                                        <div class="form-field">
+                                                            <button type="submit" class="form-control btn btn-primary">Tìm kiếm</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section ftco-no-pt ftco-no-pb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="category-wrap">
+                    <div class="row no-gutters">
+                        <div class="col-md-2">
+                            <div class="top-category text-center no-border-left">
+                                <h3><a href="#">Website &amp; Phần mềm</a></h3>
+                                <span class="icon flaticon-contact"></span>
+                                <p><span class="number">143</span> <span>Vị trí</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="top-category text-center active">
+                                <h3><a href="#">Học vấn &amp; Đào tạo</a></h3>
+                                <span class="icon flaticon-mortarboard"></span>
+                                <p><span class="number">143</span> <span>Vị trí</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="top-category text-center">
+                                <h3><a href="#">Nhiếp ảnh &amp; UI/UX Thiết Kế</a></h3>
+                                <span class="icon flaticon-idea"></span>
+                                <p><span class="number">143</span> <span>Vị trí</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="top-category text-center">
+                                <h3><a href="#">Kế toán &amp; tài chính</a></h3>
+                                <span class="icon flaticon-accounting"></span>
+                                <p><span class="number">143</span> <span>Vị trí</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="top-category text-center">
+                                <h3><a href="#">Nhà hàng &amp; Ẩm thực</a></h3>
+                                <span class="icon flaticon-dish"></span>
+                                <p><span class="number">143</span> <span>Vị trí</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="top-category text-center">
+                                <h3><a href="#">Sức khỏe &amp; Bệnh Viện</a></h3>
+                                <span class="icon flaticon-stethoscope"></span>
+                                <p><span class="number">143</span> <span>Vị trí</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+
+            <div style="display: block" class="col-md-7 heading-section text-center">
+                <span class="subheading">Danh mục công việc</span>
+                <h2 class="mb-0">Top Danh Mục</h2>
+            </div>
+        </div>
+        <div class="row">
+            <th:block th:each="categorie : ${categories}">
+            <div class="col-md-3 ">
+                <ul class="category text-center">
+
+                    <li><a style="text-decoration: none !important;" href="#"> <p th:text="${categorie.name}"></p><span class="number" th:text="${categorie.numberChoose}"></span> <span>Vị trí</span><i class="ion-ios-arrow-forward"></i></a></li>
+                </ul>
+            </div>
+            </th:block>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section services-section">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-md-3 d-flex align-self-stretch ">
+                <div class="media block-6 services d-block">
+                    <div class="icon"><span class="flaticon-resume"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Tìm kiếm hàng triệu việc làm</h3>
+                        <p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung cấp của họ.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex align-self-stretch ">
+                <div class="media block-6 services d-block">
+                    <div class="icon"><span class="flaticon-team"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Dễ dàng quản lý công việc</h3>
+                        <p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung cấp của họ.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex align-self-stretch ">
+                <div class="media block-6 services d-block">
+                    <div class="icon"><span class="flaticon-career"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Top Nghề nghiệp</h3>
+                        <p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung cấp của họ.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex align-self-stretch ">
+                <div class="media block-6 services d-block">
+                    <div class="icon"><span class="flaticon-employees"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Ứng viên Chuyên gia Tìm kiếm</h3>
+                        <p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung cấp của họ.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 pr-lg-5">
+                <div class="row justify-content-center pb-3">
+                    <div class="col-md-12 heading-section ">
+                        <span class="subheading">CÔNG VIỆC ĐƯỢC THÊM GẦN ĐÂY</span>
+                        <h2 class="mb-4">Các bài đăng về việc làm nổi bật</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <th:block th:each="recruitment : ${recruitments}">
+                        <div class="col-md-12 ">
+                            <div class="job-post-item p-4 d-block d-lg-flex align-items-center">
+                                <div class="one-third mb-4 mb-md-0">
+                                    <div class="job-post-item-header align-items-center">
+                                        <span class="subadge" th:text="${recruitment.type}"></span>
+                                        <h2 class="mr-3 text-black" th:text="${recruitment.title}"><a href="#"></a></h2>
+                                    </div>
+                                    <div class="job-post-item-body d-block d-md-flex">
+                                        <div class="mr-3"><span class="icon-layers"></span> <a href="#" th:text="${recruitment.quantity}" ></a></div>
+                                        <div><span class="icon-my_location"></span> <span th:text="${recruitment.address}"></span></div>
+                                    </div>
+                                </div>
+
+                                <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
+                                    <div>
+                                        <a href="#" class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
+                                            <span class="icon-heart"></span>
+                                        </a>
+                                    </div>
+                                    <a href="job-single.html" class="btn btn-primary py-2">Apply Job</a>
+                                </div>
+                            </div>
+                        </div><!-- end -->
+                    </th:block>
+
+                </div>
+            </div>
+            <div class="col-lg-3 sidebar">
+                <div class="row justify-content-center pb-3">
+                    <div class="col-md-12 heading-section ">
+                        <h2 class="mb-4">Top Recruitments</h2>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="">
+                        <a href="#" class="company-wrap"><img src="images/company-1.jpg" class="img-fluid" alt="Colorlib Free Template"></a>
+                        <div class="text p-3">
+                            <h3><a href="#"></a></h3>
+                            <p><span class="number"></span> <span>Open position</span></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!--<section class="ftco-section testimony-section">-->
+<!--    <div class="container">-->
+<!--        <div class="row justify-content-center mb-4">-->
+<!--            <div class="col-md-7 text-center heading-section ">-->
+<!--                <span class="subheading">Testimonial</span>-->
+<!--                <h2 class="mb-4">Happy Clients</h2>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-12">-->
+<!--                <div class="carousel-testimony owl-carousel ">-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap py-4">-->
+<!--                            <div class="text">-->
+<!--                                <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>-->
+<!--                                <div class="d-flex align-items-center">-->
+<!--                                    <div class="user-img" style="background-image: url(user/assets/images/person_1.jpg)"></div>-->
+<!--                                    <div class="pl-3">-->
+<!--                                        <p class="name">Roger Scott</p>-->
+<!--                                        <span class="position">Marketing Manager</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap py-4">-->
+<!--                            <div class="text">-->
+<!--                                <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>-->
+<!--                                <div class="d-flex align-items-center">-->
+<!--                                    <div class="user-img" style="background-image: url(user/assets/images/person_2.jpg)"></div>-->
+<!--                                    <div class="pl-3">-->
+<!--                                        <p class="name">Roger Scott</p>-->
+<!--                                        <span class="position">Marketing Manager</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap py-4">-->
+<!--                            <div class="text">-->
+<!--                                <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>-->
+<!--                                <div class="d-flex align-items-center">-->
+<!--                                    <div class="user-img" style="background-image: url(user/assets/images/person_3.jpg)"></div>-->
+<!--                                    <div class="pl-3">-->
+<!--                                        <p class="name">Roger Scott</p>-->
+<!--                                        <span class="position">Marketing Manager</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap py-4">-->
+<!--                            <div class="text">-->
+<!--                                <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>-->
+<!--                                <div class="d-flex align-items-center">-->
+<!--                                    <div class="user-img" style="background-image: url(user/assets/images/person_1.jpg)"></div>-->
+<!--                                    <div class="pl-3">-->
+<!--                                        <p class="name">Roger Scott</p>-->
+<!--                                        <span class="position">Marketing Manager</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap py-4">-->
+<!--                            <div class="text">-->
+<!--                                <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>-->
+<!--                                <div class="d-flex align-items-center">-->
+<!--                                    <div class="user-img" style="background-image: url(user/assets/images/person_2.jpg)"></div>-->
+<!--                                    <div class="pl-3">-->
+<!--                                        <p class="name">Roger Scott</p>-->
+<!--                                        <span class="position">Marketing Manager</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<section class="ftco-section ftco-candidates bg-primary">-->
+<!--    <div class="container">-->
+<!--        <div class="row justify-content-center pb-3">-->
+<!--            <div class="col-md-10 heading-section heading-section-white text-center">-->
+<!--                <span class="subheading">Candidates</span>-->
+<!--                <h2 class="mb-4">Latest Candidates</h2>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-12 ">-->
+<!--                <div class="carousel-candidates owl-carousel">-->
+<!--                    <div class="item">-->
+<!--                        <a href="#" class="team text-center">-->
+<!--                            <div class="img" style="background-image: url(user/assets/images/person_1.jpg);"></div>-->
+<!--                            <h2>Danica Lewis</h2>-->
+<!--                            <span class="position">Western City, UK</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <a href="#" class="team text-center">-->
+<!--                            <div class="img" style="background-image: url(user/assets/images/person_2.jpg);"></div>-->
+<!--                            <h2>Nicole Simon</h2>-->
+<!--                            <span class="position">Western City, UK</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <a href="#" class="team text-center">-->
+<!--                            <div class="img" style="background-image: url(user/assets/images/person_3.jpg);"></div>-->
+<!--                            <h2>Cloe Meyer</h2>-->
+<!--                            <span class="position">Western City, UK</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <a href="#" class="team text-center">-->
+<!--                            <div class="img" style="background-image: url(user/assets/images/person_4.jpg);"></div>-->
+<!--                            <h2>Rachel Clinton</h2>-->
+<!--                            <span class="position">Western City, UK</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <a href="#" class="team text-center">-->
+<!--                            <div class="img" style="background-image: url(user/assets/images/person_5.jpg);"></div>-->
+<!--                            <h2>Dave Buff</h2>-->
+<!--                            <span class="position">Western City, UK</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <a href="#" class="team text-center">-->
+<!--                            <div class="img" style="background-image: url(user/assets/images/person_6.jpg);"></div>-->
+<!--                            <h2>Dave Buff</h2>-->
+<!--                            <span class="position">Western City, UK</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<section class="ftco-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+            <div class="col-md-7 heading-section text-center ">
+                <span class="subheading">Our Blog</span>
+                <h2><span>Recent</span> Blog</h2>
+            </div>
+        </div>
+        <div class="row d-flex">
+            <div class="col-md-3 d-flex ">
+                <div class="blog-entry align-self-stretch">
+                    <a href="blog-single.html" class="block-20" style="background-image: url('user/assets/images/image_1.jpg');">
+                    </a>
+                    <div class="text mt-3">
+                        <div class="meta mb-2">
+                            <div><a href="#">August 28, 2019</a></div>
+                            <div><a href="#">Admin</a></div>
+                            <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                        </div>
+                        <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex ">
+                <div class="blog-entry align-self-stretch">
+                    <a href="blog-single.html" class="block-20" style="background-image: url('user/assets/images/image_2.jpg');">
+                    </a>
+                    <div class="text mt-3">
+                        <div class="meta mb-2">
+                            <div><a href="#">August 28, 2019</a></div>
+                            <div><a href="#">Admin</a></div>
+                            <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                        </div>
+                        <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex ">
+                <div class="blog-entry align-self-stretch">
+                    <a href="blog-single.html" class="block-20" style="background-image: url('user/assets/images/image_3.jpg');">
+                    </a>
+                    <div class="text mt-3">
+                        <div class="meta mb-2">
+                            <div><a href="#">August 28, 2019</a></div>
+                            <div><a href="#">Admin</a></div>
+                            <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                        </div>
+                        <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex ">
+                <div class="blog-entry align-self-stretch">
+                    <a href="blog-single.html" class="block-20" style="background-image: url('user/assets/images/image_4.jpg');">
+                    </a>
+                    <div class="text mt-3">
+                        <div class="meta mb-2">
+                            <div><a href="#">August 28, 2019</a></div>
+                            <div><a href="#">Admin</a></div>
+                            <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                        </div>
+                        <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section-parallax">
+    <div class="parallax-img d-flex align-items-center">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-7 text-center heading-section heading-section-white ">
+                    <h2>Subcribe to our Newsletter</h2>
+                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
+                    <div class="row d-flex justify-content-center mt-4 mb-4">
+                        <div class="col-md-12">
+                            <form action="#" class="subscribe-form">
+                                <div class="form-group d-flex">
+                                    <input type="text" class="form-control" placeholder="Enter email address">
+                                    <input type="submit" value="Subscribe" class="submit px-3">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="public/fragments :: footer" class="ftco-footer ftco-bg-dark ftco-section">
+
+</footer>
+
+
+<!-- loader -->
+<!--<div th:replace="public/fragments :: loading" id="ftco-loader" class="show fullscreen"></div>-->
+
+</body>
+</html>
