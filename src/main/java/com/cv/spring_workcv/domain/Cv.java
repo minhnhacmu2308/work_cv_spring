@@ -20,6 +20,25 @@ public class Cv {
     @Column(name = "file_name")
     private String fileName;
 
+//    @Column(name = "file_type")
+//    private String fileType;
+//
+//    @Lob
+//    private byte[] data;
+//
+//    public Cv(String fileName, String fileType, byte[] data) {
+//        this.fileName = fileName;
+//        this.fileType = fileType;
+//        this.data = data;
+//    }
+//
+//    public Cv(String fileName, String fileType, byte[] data, User user) {
+//        this.fileName = fileName;
+//        this.fileType = fileType;
+//        this.data = data;
+//        this.user = user;
+//    }
+
     @OneToOne(
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER

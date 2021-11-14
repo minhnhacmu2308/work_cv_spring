@@ -6,6 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Date;
 
 public class FileUtil {
     /**
@@ -45,5 +51,28 @@ public class FileUtil {
         if (file.exists()) {
             file.delete();
         }
+    }
+    public static String uploadPdf(HttpServletRequest request,MultipartFile image){
+        if(image.isEmpty()) {
+            System.out.println("Rỗng");
+
+        }
+        String dirname = request.getServletContext().getRealPath(CommonConstants.DIR_UPLOAD);
+
+        Path path = Paths.get(dirname);
+        try {
+            InputStream inputStream = image.getInputStream();
+
+            String name = String.valueOf(new Date().getTime()+image.getOriginalFilename().toLowerCase());
+            Files.copy(inputStream, path.resolve(name), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println(name);
+            return name;
+
+        } catch (Exception e) {
+            // TODO: handle exceptione.p
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

@@ -36,6 +36,18 @@
         <p >✅ Cập nhật ảnh đại diện thành công</p>
     </div>
 </div>
+<div  class="toast" data-delay="2000" style="position:fixed; top: 100PX; right: 10PX;z-index: 2000;width: 300px">
+    <div class="toast-header" id="change" style="background-color: #1c7430">
+        <strong class="mr-auto" style="color: white">Thông báo</strong>
+        <small style="color: white">Vừa xong</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="color: white">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body" >
+        <p id="text" >✅ Cập nhật ảnh đại diện thành công</p>
+    </div>
+</div>
 <div th:if="${success}" class="toast" id="toast" data-delay="2000" style="position:fixed;top: 100PX; right: 10PX;z-index: 2000;width: 300px">
     <div class="toast-header" style="background-color: #1c7430">
         <strong class="mr-auto" style="color: white">Thông báo</strong>
@@ -98,9 +110,34 @@
     </div>
 </div>
     <section th:if="${userInformation.status == 1 && userInformation.role.id == 1}" class="site-section" style="margin-top: 10px">
-    <form action="/user/update-profile" method="post" >
+
+
 
         <div class="container">
+                <form action="/user/uploadCv" method="post" enctype="multipart/form-data">
+                    <div class="row align-items-center mb-5">
+                        <div class="col-lg-8 ">
+                            <div class="d-flex align-items-center">
+                                <div class="form-group" style="margin-top: 15px">
+                                    <label class="btn btn-primary btn-md btn-file">
+                                        Chọn cv (pdf)<input type="file" name="file" id="" required hidden>
+                                    </label>
+                                </div>
+                            </div>
+                            <p th:text="${Cv != null ? Cv.fileName :null}"></p>
+                            <a th:if="${Cv !=null}" th:href="${'http://localhost:8080/resources/uploads/'} +${Cv.fileName}" >Xem cv</a>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" id="myBtn" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Cập nhật cv</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            <form action="/user/update-profile" method="post" >
             <div class="row align-items-center mb-5">
                 <div class="col-lg-8 mb-4 mb-lg-0">
                     <div class="d-flex align-items-center">
@@ -111,9 +148,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="row">
-                        <div class="col-6">
-                            <button type="button" id="myBtn" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</button>
-                        </div>
+
                         <div class="col-6">
                             <button type="submit" class="btn btn-block btn-primary btn-md">Lưu thông tin</button>
                         </div>
@@ -153,27 +188,42 @@
                                 if (window.FormData !== undefined) {
                                     var fileUpload = $('#fileUpload').get(0);
                                     var files = fileUpload.files;
+
                                     var email = $("#email").val();
                                     var formData = new FormData();
                                     formData.append('file', files[0]);
                                     formData.append('email', email);
-                                    $.ajax(
-                                        {
-                                            type: 'POST',
-                                            url: '/user/upload/',
-                                            contentType: false,
-                                            processData: false,
-                                            data: formData,
-                                            success: function (urlImage) {
-                                                console.log(urlImage)
-                                                $('#avatar').attr('src', urlImage)
-                                                $(".toast").toast("show");
-                                            },
-                                            error: function (err) {
-                                                alert(err);
+                                    if(files[0] == null){
+                                        // document.getElementById("change").style.backgroundColor = 'red';
+                                        // $('#text').val(" ❌ Cập nhật ảnh thất bại");
+                                        $(".toast").toast("show");
+                                    } else {
+                                        $.ajax(
+                                            {
+                                                type: 'POST',
+                                                url: '/user/upload/',
+                                                contentType: false,
+                                                processData: false,
+                                                data: formData,
+                                                success: function (urlImage) {
+                                                    console.log(urlImage)
+                                                    if(urlImage == "Error"){
+                                                        document.getElementById("change").style.backgroundColor = 'red';
+                                                        $('#text').val(" ❌ Cập nhật ảnh thất bại");
+                                                        $(".toast").toast("show");
+                                                    }else{
+                                                        $('#avatar').attr('src', urlImage)
+                                                        $(".toast").toast("show");
+                                                    }
+
+                                                },
+                                                error: function (err) {
+                                                    alert(err);
+                                                }
                                             }
-                                        }
-                                    )
+                                        )
+                                    }
+
                                 }
                             })
                         })

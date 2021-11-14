@@ -4,7 +4,7 @@ public class CommonConstants {
     /**
      * TODO: Field description
      */
-    public static final String DIR_UPLOAD = "WEB-INF/resources/uploads";
+    public static final String DIR_UPLOAD = "resources/uploads";
 
     /**
      * TODO: Field description

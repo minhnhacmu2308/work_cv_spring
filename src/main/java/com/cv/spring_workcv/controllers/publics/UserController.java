@@ -2,11 +2,20 @@ package com.cv.spring_workcv.controllers.publics;
 
 import com.cloudinary.Cloudinary;
 import com.cv.spring_workcv.constant.CommonConstants;
+import com.cv.spring_workcv.domain.Cv;
 import com.cv.spring_workcv.domain.User;
+import com.cv.spring_workcv.services.CvService;
 import com.cv.spring_workcv.services.UserService;
+import com.cv.spring_workcv.utils.FileUtil;
 import com.cv.spring_workcv.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +27,14 @@ import org.thymeleaf.util.ObjectUtils;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("user")
@@ -38,6 +51,9 @@ public class UserController {
     Cloudinary cloudinary;
 
     @Autowired
+    CvService cvService;
+
+    @Autowired
     public JavaMailSenderImpl javaMailSenderImpl;
 
     @GetMapping({"/profile/{id}" })
@@ -45,7 +61,9 @@ public class UserController {
     {
         ModelAndView mv = new ModelAndView("public/profile");
         User user = userService.getUserById(id);
+        Cv cv = cvService.getFile(user);
         mv.addObject("userInformation",user);
+        mv.addObject("Cv",cv);
         return mv;
     }
 
@@ -98,16 +116,21 @@ public class UserController {
         String email = request.getParameter("email");
         User user = userService.checkEmailExist(email);
         config.put("resource_type","auto");
-        try {
-            Map r =this.cloudinary.uploader().upload(image.getBytes(), config);
-            System.out.println(r);
-            String nameImage = (String) r.get("secure_url");
-            user.setImage(nameImage);
-            userService.save(user);
-            return nameImage;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+
+        if(image.isEmpty()) {
+            return "Error";
+        } else {
+            try {
+                Map r = this.cloudinary.uploader().upload(image.getBytes(), config);
+                System.out.println(r);
+                String nameImage = (String) r.get("secure_url");
+                user.setImage(nameImage);
+                userService.save(user);
+                return nameImage;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 
@@ -126,4 +149,34 @@ public class UserController {
         ModelAndView mv = new ModelAndView(url);
         return mv;
     }
+
+    @PostMapping("/uploadCv")
+    public ModelAndView uploadCv(@RequestParam("file") MultipartFile file,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+        String name =  FileUtil.uploadPdf(request,file);
+        Cv check = cvService.getFile(user);
+        if (Objects.isNull(check)) {
+            Cv cv = new Cv();
+            cv.setUser(user);
+            cv.setFileName(name);
+            cvService.save(cv);
+        } else {
+            check.setFileName(name);
+            cvService.save(check);
+        }
+        String url = "redirect:profile/" + user.getId();
+        ModelAndView mv = new ModelAndView(url);
+        return mv;
+    }
+//    @GetMapping("/downloadFile/{fileId}")
+//    public ResponseEntity<Resource> downloadFile(@PathVariable Integer fileId){
+//        Cv cv = cvService.getFileById(fileId);
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.parseMediaType(cv.getFileType()))
+//                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment:filename=\""+cv.getFileName()+"\"")
+//                .body(new ByteArrayResource(cv.getData()));
+//    }
+
+
 }
