@@ -54,8 +54,7 @@ public class FileUtil {
     }
     public static String uploadPdf(HttpServletRequest request,MultipartFile image){
         if(image.isEmpty()) {
-            System.out.println("Rỗng");
-
+            return "null";
         }
         String dirname = request.getServletContext().getRealPath(CommonConstants.DIR_UPLOAD);
 

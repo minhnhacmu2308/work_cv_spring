@@ -10,4 +10,5 @@ import java.util.List;
 public interface RecruitmentService{
     List<Recruitment> getAll(Sort sort);
 
+    Recruitment save(Recruitment recruitment);
 }

@@ -70,13 +70,21 @@
           <ul class="dropdown">
             <li><a th:href="@{'/user/profile/'+ ${session.user.id}}">Hồ Sơ</a></li>
             <li><a href="service-single.html">Đổi mật khẩu</a></li>
-            <li><a href="/auth/logout" >Công việc đã lưu</a></li>
-            <li><a href="/auth/logout" >Công việc đã ứng tuyển</a></li>
-            <li><a href="/auth/logout" >Công ty đã theo dõi</a></li>
+            <li th:if="${session.user.role.id == 1}"><a href="/auth/logout" >Công việc đã lưu</a></li>
+            <li th:if="${session.user.role.id == 2}"><a href="/auth/logout" >Danh sách bài đăng</a></li>
+            <li th:if="${session.user.role.id == 1}"><a href="/auth/logout" >Công việc đã ứng tuyển</a></li>
+            <li th:if="${session.user.role.id == 1}"><a href="/auth/logout" >Công ty đã theo dõi</a></li>
+            <li th:if="${session.user.role.id == 2}"><a href="/auth/logout" >Ứng cử viên tiềm năng</a></li>
             <li><a href="/auth/logout" >Đăng xuất</a></li>
 
           </ul></li>
-        <li  class="nav-item cta mr-md-1"><a href="new-post.html" class="nav-link">Đăng tuyển</a></li>
+        <th:block th:if="${session.user}">
+          <li th:if="${session.user.role.id == 1}" style="width: 50px"></li>
+        </th:block>
+        <th:block th:if="${session.user}">
+          <li th:if="${session.user.role.id == 2}"  class="nav-item cta mr-md-1"><a href="/recruitment/post" class="nav-link">Đăng tuyển</a></li>
+        </th:block>
+
         <li th:unless="${session.user}" class="nav-item cta cta-colored"><a href="/auth/login" class="nav-link">Đăng nhập</a></li>
 
       </ul>

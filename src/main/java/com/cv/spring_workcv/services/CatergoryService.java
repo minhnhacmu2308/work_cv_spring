@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface CatergoryService {
     List<Category> getAll(Sort sort);
+
+    Category getCategoryById(int id);
 }

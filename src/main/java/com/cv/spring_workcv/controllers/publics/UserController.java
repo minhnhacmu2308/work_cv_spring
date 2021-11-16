@@ -2,8 +2,10 @@ package com.cv.spring_workcv.controllers.publics;
 
 import com.cloudinary.Cloudinary;
 import com.cv.spring_workcv.constant.CommonConstants;
+import com.cv.spring_workcv.domain.Company;
 import com.cv.spring_workcv.domain.Cv;
 import com.cv.spring_workcv.domain.User;
+import com.cv.spring_workcv.services.CompanyService;
 import com.cv.spring_workcv.services.CvService;
 import com.cv.spring_workcv.services.UserService;
 import com.cv.spring_workcv.utils.FileUtil;
@@ -54,6 +56,9 @@ public class UserController {
     CvService cvService;
 
     @Autowired
+    CompanyService companyService;
+
+    @Autowired
     public JavaMailSenderImpl javaMailSenderImpl;
 
     @GetMapping({"/profile/{id}" })
@@ -61,8 +66,10 @@ public class UserController {
     {
         ModelAndView mv = new ModelAndView("public/profile");
         User user = userService.getUserById(id);
+        Company company = companyService.getCompanyByUser(user);
         Cv cv = cvService.getFile(user);
         mv.addObject("userInformation",user);
+        mv.addObject("companyInformation",company);
         mv.addObject("Cv",cv);
         return mv;
     }

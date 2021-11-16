@@ -25,4 +25,14 @@ public class CategoryServiceImpl implements CatergoryService {
         }
         return null;
     }
+
+    @Override
+    public Category getCategoryById(int id) {
+        try {
+            return categoryRepository.findCategoryById(id);
+        } catch (Exception e) {
+            log.error("Error at [getCategoryById]", e);
+        }
+        return null;
+    }
 }
