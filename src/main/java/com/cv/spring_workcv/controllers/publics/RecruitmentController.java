@@ -73,6 +73,7 @@ public class RecruitmentController {
         recruitment.setCategory(category);
         recruitment.setCompany(company);
         recruitment.setStatus(1);
+        recruitment.setCreatedAt(java.time.LocalDate.now().toString());
         category.setNumberChoose(category.getNumberChoose()+1);
         recruitmentService.save(recruitment);
         rd.addFlashAttribute(CommonConstants.SUCCESS,
