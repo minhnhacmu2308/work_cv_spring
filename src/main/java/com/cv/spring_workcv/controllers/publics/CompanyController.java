@@ -84,7 +84,7 @@ public class CompanyController {
         if (recruitmentList.size() % 5 != 0){
             numberPage = numberPage +1;
         }
-        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());;
+        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
         model.addAttribute("list", recruitments);
         model.addAttribute("recruitmentList", recruitmentSize);
         model.addAttribute("numberPage",page.orElse(0).intValue());

@@ -49,16 +49,21 @@ public class RecruitmentController {
     MessageSource messageSource;
 
     @GetMapping({"/index" })
-    public ModelAndView index(@RequestParam("page") Optional<Integer> page)
+    public ModelAndView index(HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page)
     {
         ModelAndView mv = new ModelAndView("public/recruitment");
-        Pageable pageable = PageRequest.of(page.orElse(0),3);
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
         Page<Recruitment> recruitments = recruitmentService.getList(pageable);
         List<Object[]> companies = companyService.getAll();
-        System.out.println(page.orElse(0).intValue());
-        System.out.println(recruitments);
+        List<Recruitment> recruitmentList = recruitmentService.getAll();
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
         mv.addObject("activeRe",true);
-        mv.addObject("recruitments", recruitments);
+        mv.addObject("list", recruitments);
+        model.addAttribute("recruitmentList", recruitmentSize);
         mv.addObject("companies", companies);
         mv.addObject("numberPage",page.orElse(0).intValue());
         return mv;

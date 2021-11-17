@@ -11,6 +11,17 @@
 
 </nav>
 <!-- END nav -->
+<div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-end justify-content-start">
+      <div class="col-md-12 text-center mb-5">
+        <p class="breadcrumbs mb-0"><span class="mr-3"><a href="/">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>Công việc <span></span></p>
+        <h1 class="mb-3 bread">Danh sách công việc</h1>
+      </div>
+    </div>
+  </div>
+</div>
 <div th:if="${msg_register_success}" class="toast" data-delay="2000" style="position:fixed;top: 100PX; right: 10PX;z-index: 2000;width: 300px">
   <div class="toast-header" style="background-color: #1c7430">
     <strong class="mr-auto" style="color: white">Thông báo</strong>
@@ -28,23 +39,13 @@
     });
   </script>
 </div>
-<div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-  <div class="overlay"></div>
-  <div class="container">
-    <div class="row no-gutters slider-text align-items-end justify-content-start">
-      <div class="col-md-12 ftco-animate text-center mb-5">
-        <p class="breadcrumbs mb-0"><span class="mr-3"></p>
-        <h1 class="mb-3 bread">Danh sách công việc</h1>
-      </div>
-    </div>
-  </div>
-</div>
+
 <section class="ftco-section bg-light">
   <div class="container">
     <div class="row">
       <div class="col-lg-9 pr-lg-5">
         <div class="row">
-          <th:block th:each="recruitment : ${recruitments.content}">
+          <th:block th:each="recruitment : ${list.content}">
             <div class="col-md-12 ">
               <div class="job-post-item p-4 d-block d-lg-flex align-items-center">
                 <div class="one-third mb-4 mb-md-0">
@@ -75,10 +76,11 @@
           <div class="col text-center">
             <div class="block-27">
               <ul>
-                <li th:if="${numberPage>0}"  ><a th:href="@{/recruitment/index(page=0)}"> First</a></li>
-                <li th:if="${numberPage>0}"  style="margin-left: 10px" ><a th:href="@{/recruitment/index(page = ${list.number - 1})}">Previous</a> </li>
-                <li th:if="${numberPage<recruitments.totalPages - 1}"   style="margin-left: 10px" ><a th:href="@{/recruitment/index(page = ${recruitments.number + 1})}">Next</a> </li>
-                <li style="margin-left: 10px" > <a th:href="@{/recruitment/index(page = ${recruitments.totalPages - 1})}">Last</a></li>
+                <li th:if="${numberPage>0}"><a th:href="@{/recruitment/index(page = ${list.number - 1})}">&lt;</a></li>
+                <th:block th:each="recruitment,state  : ${recruitmentList}">
+                  <li th:class="${numberPage == state.index  ? 'active' : null }"><a th:href="@{/recruitment/index(page = ${state.index})}" th:text="${state.index + 1}"></a></li>
+                </th:block>
+                <li th:if="${numberPage<list.totalPages - 1}"><a th:href="@{/recruitment/index(page = ${list.number + 1})}">&gt;</a></li>
               </ul>
             </div>
           </div>

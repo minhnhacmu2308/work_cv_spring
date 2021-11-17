@@ -17,6 +17,7 @@ public interface RecruitmentRepository extends PagingAndSortingRepository<Recrui
 
      List<Recruitment> findAll(Sort sort);
 
+     List<Recruitment> findAll();
 
      Page<Recruitment> findRecruitmentsByCompany(Company company, Pageable pageable);
 

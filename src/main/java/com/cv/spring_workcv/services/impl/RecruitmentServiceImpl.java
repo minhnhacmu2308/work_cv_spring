@@ -79,6 +79,15 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         return null;
     }
     public Page<Recruitment> getList(Pageable pageable) {
-        return recruitmentRepository.getList(pageable);
+        try {
+            return recruitmentRepository.getList(pageable);
+        } catch (Exception e) {
+            log.error("Error at [getRecruitment]", e);
+        }
+        return null;
+    }
+    @Override
+    public List<Recruitment> getAll() {
+        return recruitmentRepository.findAll();
     }
 }
