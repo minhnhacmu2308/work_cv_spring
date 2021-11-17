@@ -2,20 +2,28 @@ package com.cv.spring_workcv.controllers.publics;
 
 import com.cv.spring_workcv.constant.CommonConstants;
 import com.cv.spring_workcv.domain.Company;
+import com.cv.spring_workcv.domain.Recruitment;
 import com.cv.spring_workcv.domain.User;
 import com.cv.spring_workcv.services.CatergoryService;
 import com.cv.spring_workcv.services.CompanyService;
+import com.cv.spring_workcv.services.RecruitmentService;
 import com.cv.spring_workcv.services.UserService;
 import com.cv.spring_workcv.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -28,6 +36,9 @@ public class CompanyController {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    RecruitmentService recruitmentService;
 
     @Autowired
     MessageSource messageSource;
@@ -58,7 +69,14 @@ public class CompanyController {
     }
 
     @GetMapping("/list-post")
-    public  ModelAndView getListPost(){
+    public  ModelAndView getListPost(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+        Company company = companyService.getCompanyByUser(user);
+        Sort sort = Sort.by("id").descending();
+        Pageable pageable = PageRequest.of(1, 2, sort);
+        Page<Recruitment> recruitments =  recruitmentService.getRecruitmentByCompany(company,pageable);
+        model.addAttribute("list", recruitments);
         ModelAndView mv = new ModelAndView("public/post-list");
         return mv;
     }

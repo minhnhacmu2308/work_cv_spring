@@ -1,8 +1,10 @@
 package com.cv.spring_workcv.controllers.publics;
 
 import com.cv.spring_workcv.constant.CommonConstants;
+import com.cv.spring_workcv.domain.Company;
 import com.cv.spring_workcv.domain.Role;
 import com.cv.spring_workcv.domain.User;
+import com.cv.spring_workcv.services.CompanyService;
 import com.cv.spring_workcv.services.RoleService;
 import com.cv.spring_workcv.services.UserService;
 import com.cv.spring_workcv.utils.EncrytedPasswordUtils;
@@ -27,6 +29,9 @@ public class AuthenticationController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CompanyService companyService;
 
     @Autowired
     RoleService roleService;
@@ -57,6 +62,10 @@ public class AuthenticationController {
                 mv.addObject(CommonConstants.MSG_REGISTER_ERROR, messageSource.getMessage("email_exited", null, Locale.getDefault()));
             } else {
                 User userSave = userService.save(user);
+                User userCompany = userService.checkEmailExist(userSave.getEmail());
+                Company company = new Company();
+                company.setUser(userCompany);
+                companyService.save(company);
                 mv.addObject(CommonConstants.MSG_REGISTER_SUCCESS, messageSource.getMessage("register_success", null, Locale.getDefault()));
             }
         }

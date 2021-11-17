@@ -1,10 +1,13 @@
 package com.cv.spring_workcv.services.impl;
 
+import com.cv.spring_workcv.domain.Company;
 import com.cv.spring_workcv.domain.Recruitment;
 import com.cv.spring_workcv.repository.RecruitmentRepository;
 import com.cv.spring_workcv.services.RecruitmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,16 @@ public class RecruitmentServiceImpl implements RecruitmentService {
             return recruitmentRepository.save(recruitment);
         } catch (Exception e) {
             log.error("Error at [save]", e);
+        }
+        return null;
+    }
+
+    @Override
+    public Page<Recruitment> getRecruitmentByCompany(Company company, Pageable pageable) {
+        try {
+            return recruitmentRepository.findRecruitmentsByCompany(company, pageable);
+        } catch (Exception e) {
+            log.error("Error at [getRecruitmentByCompany]", e);
         }
         return null;
     }

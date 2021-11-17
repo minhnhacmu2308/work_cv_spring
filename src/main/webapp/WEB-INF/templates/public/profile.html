@@ -157,11 +157,11 @@
                         <h3 class="text-black mb-5 border-bottom pb-2">Thông tin chi tiết</h3>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" th:value="${userInformation.email}" required placeholder="you@yourdomain.com">
+                            <input type="email" class="form-control" id="email" name="email" th:value="${userInformation.email != null ? userInformation.email : null}" required placeholder="you@yourdomain.com">
                         </div>
                         <div class="form-group">
                             <label for="job-title">Full name</label>
-                            <input type="text" class="form-control" name="fullName" th:value="${userInformation.fullName}" required id="job-title" placeholder="Full name">
+                            <input type="text" class="form-control" name="fullName" th:value="${userInformation.fullName != null ? userInformation.fullName : null}" required id="job-title" placeholder="Full name">
                         </div>
                         <div class="form-group">
                             <label for="job-location">Địa chỉ</label>
@@ -235,13 +235,13 @@
                             <div class="p-4 p-md-5 border rounded" method="post">
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="text" class="form-control" required id="email1" name="email" th:value="${companyInformation.email}" placeholder="you@yourdomain.com">
+                                    <input type="text" class="form-control" required id="email1" name="email" th:value="${companyInformation.email != null ? companyInformation.email : null }" placeholder="you@yourdomain.com">
                                 </div>
                                 <div class="form-group">
                                     <label for="job-title">Tên công ty</label>
-                                    <input type="text" class="form-control" name="nameCompany" th:value="${companyInformation.nameCompany}" id="job-title"  placeholder="Full name" required>
-                                    <input type="hidden" class="form-control" name="user_id" th:value="${companyInformation.user.id}" id="job-title" placeholder="Full name">
-                                    <input type="hidden" class="form-control" name="id" th:value="${companyInformation.id}" id="job-title" placeholder="Full name">
+                                    <input type="text" class="form-control" name="nameCompany" th:value="${companyInformation.nameCompany != null ? companyInformation.nameCompany : null }" id="job-title"  placeholder="Full name" required>
+                                    <input type="hidden" class="form-control" name="user_id" th:value="${companyInformation.user.id != null ? companyInformation.user.id : null}" id="job-title" placeholder="Full name">
+                                    <input type="hidden" class="form-control" name="id" th:value="${companyInformation.id !=null ? companyInformation.id : null}" id="job-title" placeholder="Full name">
                                 </div>
                                 <div class="form-group">
                                     <label for="job-location">Địa chỉ</label>
