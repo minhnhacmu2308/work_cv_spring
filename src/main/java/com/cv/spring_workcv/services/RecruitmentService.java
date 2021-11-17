@@ -1,7 +1,9 @@
 package com.cv.spring_workcv.services;
 
+import com.cv.spring_workcv.domain.Category;
 import com.cv.spring_workcv.domain.Company;
 import com.cv.spring_workcv.domain.Recruitment;
+import com.cv.spring_workcv.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,4 +18,11 @@ public interface RecruitmentService{
     Recruitment save(Recruitment recruitment);
 
     Page<Recruitment> getRecruitmentByCompany(Company company, Pageable pageable);
+
+    List<Recruitment> getRecruitmentByCompany(Company company);
+
+    Recruitment getRecruitmentById(int id);
+
+    List<Recruitment> getRelated(Category category);
+
 }

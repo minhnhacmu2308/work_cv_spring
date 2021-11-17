@@ -25,7 +25,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("user")
@@ -69,14 +72,22 @@ public class CompanyController {
     }
 
     @GetMapping("/list-post")
-    public  ModelAndView getListPost(HttpServletRequest request, Model model){
+    public  ModelAndView getListPost(HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
         Company company = companyService.getCompanyByUser(user);
         Sort sort = Sort.by("id").descending();
-        Pageable pageable = PageRequest.of(1, 2, sort);
+        Pageable pageable = PageRequest.of(page.orElse(0), 5, sort);
         Page<Recruitment> recruitments =  recruitmentService.getRecruitmentByCompany(company,pageable);
+        List<Recruitment> recruitmentList = recruitmentService.getRecruitmentByCompany(company);
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());;
         model.addAttribute("list", recruitments);
+        model.addAttribute("recruitmentList", recruitmentSize);
+        model.addAttribute("numberPage",page.orElse(0).intValue());
         ModelAndView mv = new ModelAndView("public/post-list");
         return mv;
     }

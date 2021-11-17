@@ -1,5 +1,6 @@
 package com.cv.spring_workcv.repository;
 
+import com.cv.spring_workcv.domain.Category;
 import com.cv.spring_workcv.domain.Company;
 import com.cv.spring_workcv.domain.Recruitment;
 import org.springframework.data.domain.Page;
@@ -15,5 +16,11 @@ public interface RecruitmentRepository extends PagingAndSortingRepository<Recrui
 
 
      Page<Recruitment> findRecruitmentsByCompany(Company company, Pageable pageable);
+
+     List<Recruitment> findRecruitmentsByCompany(Company company);
+
+     Recruitment findRecruitmentById(int id);
+
+     List<Recruitment> findRecruitmentByCategory(Category category);
 
 }

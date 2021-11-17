@@ -81,4 +81,16 @@ public class RecruitmentController {
         ModelAndView mv = new ModelAndView("redirect:post");
         return mv;
     }
+
+    @GetMapping("/detail/{id}")
+    public ModelAndView getDetail(@PathVariable int id){
+
+        Recruitment recruitment = recruitmentService.getRecruitmentById(id);
+        List<Recruitment> recruitmentListRelated = recruitmentService.getRelated(recruitment.getCategory());
+        List<Recruitment> recruitmentList = recruitmentListRelated.stream().limit(5).collect(Collectors.toList());
+        ModelAndView mv = new ModelAndView("public/detail-post");
+        mv.addObject("recruitment",recruitment);
+        mv.addObject("listRelated",recruitmentList);
+        return mv;
+    }
 }

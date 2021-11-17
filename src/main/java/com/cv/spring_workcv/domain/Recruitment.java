@@ -38,6 +38,9 @@ public class Recruitment {
     @Column(name = "rank")
     private String rank;
 
+    @Column(name = "deadline")
+    private String deadline;
+
     @Column(name = "description")
     private String description;
 
