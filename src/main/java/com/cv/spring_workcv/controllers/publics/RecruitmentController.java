@@ -11,6 +11,9 @@ import com.cv.spring_workcv.services.RecruitmentService;
 import com.cv.spring_workcv.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -45,10 +49,18 @@ public class RecruitmentController {
     MessageSource messageSource;
 
     @GetMapping({"/index" })
-    public ModelAndView index()
+    public ModelAndView index(@RequestParam("page") Optional<Integer> page)
     {
-        ModelAndView mv = new ModelAndView("public/listJob");
+        ModelAndView mv = new ModelAndView("public/recruitment");
+        Pageable pageable = PageRequest.of(page.orElse(0),3);
+        Page<Recruitment> recruitments = recruitmentService.getList(pageable);
+        List<Object[]> companies = companyService.getAll();
+        System.out.println(page.orElse(0).intValue());
+        System.out.println(recruitments);
         mv.addObject("activeRe",true);
+        mv.addObject("recruitments", recruitments);
+        mv.addObject("companies", companies);
+        mv.addObject("numberPage",page.orElse(0).intValue());
         return mv;
     }
 

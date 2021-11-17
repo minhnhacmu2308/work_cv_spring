@@ -235,6 +235,7 @@
                             <div class="p-4 p-md-5 border rounded" method="post">
                                 <div class="form-group">
                                     <label for="email">Email</label>
+
                                     <input type="text" class="form-control" required id="email1" name="email" th:value="${companyInformation.email != null ? companyInformation.email : null }" placeholder="you@yourdomain.com">
                                 </div>
                                 <div class="form-group">
@@ -242,6 +243,7 @@
                                     <input type="text" class="form-control" name="nameCompany" th:value="${companyInformation.nameCompany != null ? companyInformation.nameCompany : null }" id="job-title"  placeholder="Full name" required>
                                     <input type="hidden" class="form-control" name="user_id" th:value="${companyInformation.user.id != null ? companyInformation.user.id : null}" id="job-title" placeholder="Full name">
                                     <input type="hidden" class="form-control" name="id" th:value="${companyInformation.id !=null ? companyInformation.id : null}" id="job-title" placeholder="Full name">
+
                                 </div>
                                 <div class="form-group">
                                     <label for="job-location">Địa chỉ</label>
