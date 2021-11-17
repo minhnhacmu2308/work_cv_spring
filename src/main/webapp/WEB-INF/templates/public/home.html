@@ -358,20 +358,20 @@
             <div class="col-lg-3 sidebar">
                 <div class="row justify-content-center pb-3">
                     <div class="col-md-12 heading-section ">
-                        <h2 class="mb-4">Top Recruitments</h2>
+                        <h2 class="mb-4">Công ty nổi bật</h2>
                     </div>
                 </div>
-
+                <th:block th:each="companies : ${companies}">
                 <div class="sidebar-box">
                     <div class="">
-                        <a href="#" class="company-wrap"><img src="images/company-1.jpg" class="img-fluid" alt="Colorlib Free Template"></a>
+                        <a href="#" class="company-wrap"><img th:src="${'/resources/uploads/'} + ${companies[2]}" class="img-fluid" alt="Colorlib Free Template"></a>
                         <div class="text p-3">
-                            <h3><a href="#"></a></h3>
-                            <p><span class="number"></span> <span>Open position</span></p>
+                            <h3><a href="#" th:text="${companies[1]}"></a></h3>
+                            <p><span class="number" style="color: black" th:text="${companies[3]}"></span> <span>Vị trí ứng tuyển</span></p>
                         </div>
                     </div>
                 </div>
-
+                </th:block>
             </div>
         </div>
     </div>

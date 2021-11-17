@@ -25,4 +25,5 @@ public interface RecruitmentService{
 
     List<Recruitment> getRelated(Category category);
 
+    Page<Recruitment> getList(Pageable pageable);
 }

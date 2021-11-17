@@ -78,4 +78,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         }
         return null;
     }
+    public Page<Recruitment> getList(Pageable pageable) {
+        return recruitmentRepository.getList(pageable);
+    }
 }
