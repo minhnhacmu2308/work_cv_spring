@@ -15,4 +15,6 @@ public interface CvService {
     Cv getFile(User user);
 
     Cv getFileById(int id);
+
+    Cv getCvbyFileName(String fileName);
 }

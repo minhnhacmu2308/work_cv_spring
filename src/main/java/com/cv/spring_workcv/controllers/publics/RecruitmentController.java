@@ -1,14 +1,9 @@
 package com.cv.spring_workcv.controllers.publics;
 
 import com.cv.spring_workcv.constant.CommonConstants;
-import com.cv.spring_workcv.domain.Category;
-import com.cv.spring_workcv.domain.Company;
-import com.cv.spring_workcv.domain.Recruitment;
-import com.cv.spring_workcv.domain.User;
-import com.cv.spring_workcv.services.CatergoryService;
-import com.cv.spring_workcv.services.CompanyService;
-import com.cv.spring_workcv.services.RecruitmentService;
-import com.cv.spring_workcv.services.UserService;
+import com.cv.spring_workcv.domain.*;
+import com.cv.spring_workcv.services.*;
+import com.cv.spring_workcv.utils.Middleware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -26,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,6 +43,9 @@ public class RecruitmentController {
 
     @Autowired
     MessageSource messageSource;
+
+    @Autowired
+    ApplyPostService applyPostService;
 
     @GetMapping({"/index" })
     public ModelAndView index(HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page)
@@ -82,32 +81,44 @@ public class RecruitmentController {
     @PostMapping ({"/add" })
     public ModelAndView add(@ModelAttribute("recruitment") Recruitment recruitment, RedirectAttributes rd, HttpServletRequest request)
     {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
-        String categoryId = request.getParameter("category_id");
-        Company company = companyService.getCompanyByUser(user);
-        Category category = catergoryService.getCategoryById(Integer.parseInt(categoryId));
-        recruitment.setCategory(category);
-        recruitment.setCompany(company);
-        recruitment.setStatus(1);
-        recruitment.setCreatedAt(java.time.LocalDate.now().toString());
-        category.setNumberChoose(category.getNumberChoose()+1);
-        recruitmentService.save(recruitment);
-        rd.addFlashAttribute(CommonConstants.SUCCESS,
-                messageSource.getMessage("post_success", null, Locale.getDefault()));
-        ModelAndView mv = new ModelAndView("redirect:post");
+        ModelAndView mv = new ModelAndView();
+        boolean auth = Middleware.middleware(request);
+        if (auth) {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            String categoryId = request.getParameter("category_id");
+            Company company = companyService.getCompanyByUser(user);
+            Category category = catergoryService.getCategoryById(Integer.parseInt(categoryId));
+            recruitment.setCategory(category);
+            recruitment.setCompany(company);
+            recruitment.setStatus(1);
+            recruitment.setCreatedAt(java.time.LocalDate.now().toString());
+            category.setNumberChoose(category.getNumberChoose()+1);
+            recruitmentService.save(recruitment);
+            rd.addFlashAttribute(CommonConstants.SUCCESS,
+                    messageSource.getMessage("post_success", null, Locale.getDefault()));
+            mv = new ModelAndView("redirect:post");
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
+        }
         return mv;
     }
 
     @GetMapping("/detail/{id}")
-    public ModelAndView getDetail(@PathVariable int id){
-
+    public ModelAndView getDetail(@PathVariable int id,HttpServletRequest request){
+        ModelAndView mv = new ModelAndView("public/detail-post");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
         Recruitment recruitment = recruitmentService.getRecruitmentById(id);
         List<Recruitment> recruitmentListRelated = recruitmentService.getRelated(recruitment.getCategory());
         List<Recruitment> recruitmentList = recruitmentListRelated.stream().limit(5).collect(Collectors.toList());
-        ModelAndView mv = new ModelAndView("public/detail-post");
+        List<ApplyPost> applyPosts = applyPostService.getApplyPostsByRecruitment(recruitment);
+        if (Objects.nonNull(user) && user.getId() == recruitment.getCompany().getUser().getId()) {
+            mv.addObject("applyPosts", applyPosts);
+        }
         mv.addObject("recruitment",recruitment);
         mv.addObject("listRelated",recruitmentList);
+
         return mv;
     }
 }

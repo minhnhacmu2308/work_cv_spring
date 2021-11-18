@@ -64,7 +64,6 @@ public class FileUtil {
 
             String name = String.valueOf(new Date().getTime()+image.getOriginalFilename().toLowerCase());
             Files.copy(inputStream, path.resolve(name), StandardCopyOption.REPLACE_EXISTING);
-            System.out.println(name);
             return name;
 
         } catch (Exception e) {

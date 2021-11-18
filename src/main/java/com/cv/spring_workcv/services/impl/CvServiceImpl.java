@@ -41,4 +41,9 @@ public class CvServiceImpl implements CvService {
     public Cv getFileById(int id) {
         return cvRepository.findCvById(id);
     }
+
+    @Override
+    public Cv getCvbyFileName(String fileName) {
+        return cvRepository.findByFileName(fileName);
+    }
 }

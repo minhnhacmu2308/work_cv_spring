@@ -34,6 +34,7 @@ public class CommonConstants {
     public static final String MY_PASSWORD = "passnhutren123";
 
     public static final String CONFIRM_ACCOUNT = "confirm_account";
+    public static final String CONFIRM_AWAIT = "confirm_await";
 
     public static final String SUCCESS = "success";
 }

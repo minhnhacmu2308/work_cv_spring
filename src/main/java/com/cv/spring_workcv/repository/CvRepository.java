@@ -9,4 +9,6 @@ public interface CvRepository extends JpaRepository<Cv, Integer> {
     Cv findCvByUser(User user);
 
     Cv findCvById(int id);
+
+    Cv findByFileName(String fileName);
 }

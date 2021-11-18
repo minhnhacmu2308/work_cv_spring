@@ -10,6 +10,7 @@ import com.cv.spring_workcv.services.CvService;
 import com.cv.spring_workcv.services.UserService;
 import com.cv.spring_workcv.utils.FileUtil;
 import com.cv.spring_workcv.utils.MailUtil;
+import com.cv.spring_workcv.utils.Middleware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.ByteArrayResource;
@@ -62,15 +63,22 @@ public class UserController {
     public JavaMailSenderImpl javaMailSenderImpl;
 
     @GetMapping({"/profile/{id}" })
-    public ModelAndView profile(@PathVariable int id)
+    public ModelAndView profile(@PathVariable int id,HttpServletRequest request)
     {
-        ModelAndView mv = new ModelAndView("public/profile");
-        User user = userService.getUserById(id);
-        Company company = companyService.getCompanyByUser(user);
-        Cv cv = cvService.getFile(user);
-        mv.addObject("userInformation",user);
-        mv.addObject("companyInformation",company);
-        mv.addObject("Cv",cv);
+        ModelAndView mv = new ModelAndView();
+        boolean auth = Middleware.middleware(request);
+        if (auth) {
+            User user = userService.getUserById(id);
+            Company company = companyService.getCompanyByUser(user);
+            Cv cv = cvService.getFile(user);
+            mv = new ModelAndView("public/profile");
+            mv.addObject("userInformation",user);
+            mv.addObject("companyInformation",company);
+            mv.addObject("Cv",cv);
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
+        }
+
         return mv;
     }
 
@@ -101,6 +109,8 @@ public class UserController {
             e.printStackTrace();
         }
         String url = "redirect:profile/" + user.getId();
+        rd.addFlashAttribute(CommonConstants.CONFIRM_AWAIT,
+                messageSource.getMessage("confirm_await", null, Locale.getDefault()));
         rd.addFlashAttribute(CommonConstants.CONFIRM_ACCOUNT,
                 messageSource.getMessage("confirm_success", null, Locale.getDefault()));
         ModelAndView mv = new ModelAndView(url);
@@ -109,11 +119,16 @@ public class UserController {
 
     @GetMapping("/confirm/{email}")
     public ModelAndView confirmAccount(@PathVariable String email){
+        ModelAndView mv = new ModelAndView();
         User user = userService.checkEmailExist(email);
-        user.setStatus(1);
-        userService.save(user);
-        String url = "redirect:/user/profile/" + user.getId();
-        ModelAndView mv = new ModelAndView(url);
+        if (user.getStatus() == 1) {
+            mv = new ModelAndView("redirect:/");
+        } else {
+            user.setStatus(1);
+            userService.save(user);
+            String url = "redirect:/user/profile/" + user.getId();
+            mv = new ModelAndView(url);
+        }
         return mv;
     }
 
@@ -168,9 +183,19 @@ public class UserController {
             cv.setUser(user);
             cv.setFileName(name);
             cvService.save(cv);
+            Cv cv1 = cvService.getCvbyFileName(name);
+            System.out.println(cv1.getUser().getId());
+            User userAdd = userService.getUserById(cv1.getUser().getId());
+            userAdd.setCv(cv1);
+            userService.save(userAdd);
         } else {
             check.setFileName(name);
             cvService.save(check);
+            Cv cv1 = cvService.getCvbyFileName(name);
+            System.out.println(cv1.getUser().getId());
+            User userAdd = userService.getUserById(cv1.getUser().getId());
+            userAdd.setCv(cv1);
+            userService.save(userAdd);
         }
         String url = "redirect:profile/" + user.getId();
         ModelAndView mv = new ModelAndView(url);

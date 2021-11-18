@@ -9,6 +9,7 @@ import com.cv.spring_workcv.services.CompanyService;
 import com.cv.spring_workcv.services.RecruitmentService;
 import com.cv.spring_workcv.services.UserService;
 import com.cv.spring_workcv.utils.FileUtil;
+import com.cv.spring_workcv.utils.Middleware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -73,22 +74,29 @@ public class CompanyController {
 
     @GetMapping("/list-post")
     public  ModelAndView getListPost(HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
-        Company company = companyService.getCompanyByUser(user);
-        Sort sort = Sort.by("id").descending();
-        Pageable pageable = PageRequest.of(page.orElse(0), 5, sort);
-        Page<Recruitment> recruitments =  recruitmentService.getRecruitmentByCompany(company,pageable);
-        List<Recruitment> recruitmentList = recruitmentService.getRecruitmentByCompany(company);
-        int numberPage = recruitmentList.size() / 5;
-        if (recruitmentList.size() % 5 != 0){
-            numberPage = numberPage +1;
+
+        ModelAndView mv = new ModelAndView();
+        boolean auth = Middleware.middleware(request);
+        if (auth) {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            Company company = companyService.getCompanyByUser(user);
+            Sort sort = Sort.by("id").descending();
+            Pageable pageable = PageRequest.of(page.orElse(0), 5, sort);
+            Page<Recruitment> recruitments =  recruitmentService.getRecruitmentByCompany(company,pageable);
+            List<Recruitment> recruitmentList = recruitmentService.getRecruitmentByCompany(company);
+            int numberPage = recruitmentList.size() / 5;
+            if (recruitmentList.size() % 5 != 0){
+                numberPage = numberPage +1;
+            }
+            List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+            model.addAttribute("list", recruitments);
+            model.addAttribute("recruitmentList", recruitmentSize);
+            model.addAttribute("numberPage",page.orElse(0).intValue());
+            mv = new ModelAndView("public/post-list");
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
         }
-        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
-        model.addAttribute("list", recruitments);
-        model.addAttribute("recruitmentList", recruitmentSize);
-        model.addAttribute("numberPage",page.orElse(0).intValue());
-        ModelAndView mv = new ModelAndView("public/post-list");
         return mv;
     }
 }
