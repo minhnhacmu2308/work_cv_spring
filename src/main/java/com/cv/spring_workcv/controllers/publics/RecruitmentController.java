@@ -78,6 +78,18 @@ public class RecruitmentController {
         return mv;
     }
 
+    @GetMapping({"/editpost/{id}" })
+    public ModelAndView editpostRecruitment(@PathVariable int id,HttpServletRequest request)
+    {
+        ModelAndView mv = new ModelAndView("public/edit-job");
+        Sort sortCategory = Sort.by("numberChoose").descending();
+        List<Category> categories = catergoryService.getAll(sortCategory).stream().collect(Collectors.toList());
+        Recruitment recruitment = recruitmentService.getRecruitmentById(id);
+        mv.addObject("categories", categories);
+        mv.addObject("recruitment", recruitment);
+        return mv;
+    }
+
     @PostMapping ({"/add" })
     public ModelAndView add(@ModelAttribute("recruitment") Recruitment recruitment, RedirectAttributes rd, HttpServletRequest request)
     {
@@ -119,6 +131,29 @@ public class RecruitmentController {
         mv.addObject("recruitment",recruitment);
         mv.addObject("listRelated",recruitmentList);
 
+        return mv;
+    }
+
+    @PostMapping ({"/edit" })
+    public ModelAndView edit(@ModelAttribute("recruitment") Recruitment recruitment, RedirectAttributes rd, HttpServletRequest request)
+    {
+        ModelAndView mv = new ModelAndView();
+        boolean auth = Middleware.middleware(request);
+        if (auth) {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            String categoryId = request.getParameter("category_id");
+            Company company = companyService.getCompanyByUser(user);
+            Category category = catergoryService.getCategoryById(Integer.parseInt(categoryId));
+            recruitment.setCategory(category);
+            recruitment.setCompany(company);
+            recruitmentService.save(recruitment);
+            rd.addFlashAttribute(CommonConstants.SUCCESS,
+                    messageSource.getMessage("update_success", null, Locale.getDefault()));
+            mv = new ModelAndView("redirect:/user/list-post");
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
+        }
         return mv;
     }
 }
