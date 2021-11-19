@@ -28,10 +28,10 @@ public class CommonConstants {
      */
     public static final String SESSION_USER = "user";
 
-    public static final String MY_EMAIL = "websitedoan@gmail.com";
+    public static final String MY_EMAIL = "cap210diem@gmail.com";
 
     // Replace password!!
-    public static final String MY_PASSWORD = "passnhutren123";
+    public static final String MY_PASSWORD = "passnhutren";
 
     public static final String CONFIRM_ACCOUNT = "confirm_account";
     public static final String CONFIRM_AWAIT = "confirm_await";

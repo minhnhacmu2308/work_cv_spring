@@ -1,12 +1,16 @@
 package com.cv.spring_workcv.services.impl;
 
 import com.cv.spring_workcv.domain.Cv;
+import com.cv.spring_workcv.domain.Recruitment;
 import com.cv.spring_workcv.domain.User;
 import com.cv.spring_workcv.repository.CvRepository;
 import com.cv.spring_workcv.services.CvService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 public class CvServiceImpl implements CvService {
@@ -45,5 +49,10 @@ public class CvServiceImpl implements CvService {
     @Override
     public Cv getCvbyFileName(String fileName) {
         return cvRepository.findByFileName(fileName);
+    }
+
+    @Override
+    public Cv lastCv() {
+        return cvRepository.lastCv();
     }
 }

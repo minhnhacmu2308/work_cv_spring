@@ -2,8 +2,11 @@ package com.cv.spring_workcv.services;
 
 import com.cv.spring_workcv.domain.Cv;
 import com.cv.spring_workcv.domain.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 public interface CvService {
@@ -17,4 +20,6 @@ public interface CvService {
     Cv getFileById(int id);
 
     Cv getCvbyFileName(String fileName);
+
+    Cv lastCv();
 }

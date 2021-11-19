@@ -1,0 +1,27 @@
+1. Trang chủ
+- Hiển thị các công ty nổi bật -done
+- Hiển thị các công việc mới nhất - done
+2. Nhà tuyển dụng
+- đăng ký tài khoản,login, logout - done (lỗi gửi mail)
+- Trang thông tin công ty (đăng ký thông tin công ty, update thông tin công ty) - done
+- Quản lý đăng tin tuyển dụng - done
+- Quản lý ứng viên
+- Đăng tin tuyển dụng - done
+3.Người tìm việc
+- đăng ký tài khoản, login, logout
+- chức năng tìm việc (tìm kiếm theo công việc, địa điểm)
+- chức năng tạo cv (upload file pdf)
+- chức năng ứng tuyển
+- chức năng theo dõi công việc, theo dõi công ty
+- Quản lý các việc đã ứng tuyển, đã theo dõi
+
+
+
+Những chức năng cơ bản a nêu trên, trong lúc làm các em xử lý các chức năng răng cho nó logic là được. logic theo a cứ copy theo topdev là ổn
+DB với UI bên em tự design nha.
+
+Thời gian:
+23/11 a sẽ có buổi thông đồ án nên cỡ 21 22 a cần crud để thông nha
+Giữa tháng 1 sẽ có 1 buổi thông nữa nên tới đó sẽ giao phần tiếp theo
+Sau tết mới bảo vệ nên tới đó tính phần cuối
+

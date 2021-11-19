@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cv.spring_workcv.constant.CommonConstants;
 import com.cv.spring_workcv.domain.Company;
 import com.cv.spring_workcv.domain.Cv;
+import com.cv.spring_workcv.domain.Recruitment;
 import com.cv.spring_workcv.domain.User;
 import com.cv.spring_workcv.services.CompanyService;
 import com.cv.spring_workcv.services.CvService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +36,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("user")
@@ -178,24 +178,23 @@ public class UserController {
         User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
         String name =  FileUtil.uploadPdf(request,file);
         Cv check = cvService.getFile(user);
+
         if (Objects.isNull(check)) {
             Cv cv = new Cv();
             cv.setUser(user);
             cv.setFileName(name);
             cvService.save(cv);
-            Cv cv1 = cvService.getCvbyFileName(name);
-            System.out.println(cv1.getUser().getId());
+            /*Cv cv1 = cvService.lastCv();
             User userAdd = userService.getUserById(cv1.getUser().getId());
             userAdd.setCv(cv1);
-            userService.save(userAdd);
+            userService.save(userAdd);*/
         } else {
             check.setFileName(name);
             cvService.save(check);
-            Cv cv1 = cvService.getCvbyFileName(name);
-            System.out.println(cv1.getUser().getId());
+            /*Cv cv1 = cvService.lastCv();
             User userAdd = userService.getUserById(cv1.getUser().getId());
             userAdd.setCv(cv1);
-            userService.save(userAdd);
+            userService.save(userAdd);*/
         }
         String url = "redirect:profile/" + user.getId();
         ModelAndView mv = new ModelAndView(url);
