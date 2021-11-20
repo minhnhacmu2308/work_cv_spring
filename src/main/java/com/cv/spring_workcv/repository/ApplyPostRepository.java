@@ -10,4 +10,5 @@ import java.util.List;
 public interface ApplyPostRepository extends JpaRepository<ApplyPost, Integer> {
 
     List<ApplyPost> findApplyPostByRecruitment(Recruitment recruitment);
+
 }

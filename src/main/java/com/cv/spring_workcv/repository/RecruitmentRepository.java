@@ -30,4 +30,6 @@ public interface RecruitmentRepository extends PagingAndSortingRepository<Recrui
      @Query(value = "SELECT * FROM recruitment ORDER BY created_at DESC",nativeQuery = true)
      Page<Recruitment> getList(Pageable pageable);
 
+
+
 }

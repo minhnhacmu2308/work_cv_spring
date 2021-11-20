@@ -86,8 +86,18 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         }
         return null;
     }
+
     @Override
     public List<Recruitment> getAll() {
         return recruitmentRepository.findAll();
+    }
+
+    @Override
+    public void delete(int id) {
+        try {
+            recruitmentRepository.deleteById(id);
+        } catch (Exception e) {
+            log.error("Error at [save]", e);
+        }
     }
 }

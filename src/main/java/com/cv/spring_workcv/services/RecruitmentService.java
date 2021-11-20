@@ -28,4 +28,6 @@ public interface RecruitmentService{
     Page<Recruitment> getList(Pageable pageable);
 
     List<Recruitment> getAll();
+
+    void delete(int id);
 }

@@ -47,6 +47,9 @@ public class RecruitmentController {
     @Autowired
     ApplyPostService applyPostService;
 
+    @Autowired
+    SaveJobService saveJobService;
+
     @GetMapping({"/index" })
     public ModelAndView index(HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page)
     {
@@ -150,6 +153,33 @@ public class RecruitmentController {
             recruitmentService.save(recruitment);
             rd.addFlashAttribute(CommonConstants.SUCCESS,
                     messageSource.getMessage("update_success", null, Locale.getDefault()));
+            mv = new ModelAndView("redirect:/user/list-post");
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
+        }
+        return mv;
+    }
+
+    @PostMapping ({"/delete" })
+    public ModelAndView delete( RedirectAttributes rd, HttpServletRequest request)
+    {
+        ModelAndView mv = new ModelAndView();
+        boolean auth = Middleware.middleware(request);
+        String id = request.getParameter("id");
+        int idRecruiment = Integer.parseInt(id);
+        Recruitment recruitment = recruitmentService.getRecruitmentById(idRecruiment);
+        List<SaveJob> saveJobList = saveJobService.findSaveJobByRecruitment(recruitment);
+        List<ApplyPost> applyPostList = applyPostService.getApplyPostsByRecruitment(recruitment);
+        if (auth) {
+            if(saveJobList.size() == 0 && applyPostList.size() == 0){
+                recruitmentService.delete(idRecruiment);
+                rd.addFlashAttribute(CommonConstants.SUCCESS,
+                        messageSource.getMessage("delete_success", null, Locale.getDefault()));
+            }
+            else{
+                rd.addFlashAttribute(CommonConstants.ERROR,
+                        messageSource.getMessage("delete_fail", null, Locale.getDefault()));
+            }
             mv = new ModelAndView("redirect:/user/list-post");
         } else {
             mv = new ModelAndView("redirect:/auth/login");
