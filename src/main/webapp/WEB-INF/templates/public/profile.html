@@ -133,30 +133,7 @@
                             <a th:if="${Cv !=null}" th:href="${'http://localhost:8080/resources/uploads/'} +${Cv.fileName}" >Xem cv</a>
                             <a style="color: red;margin-left: 20px" th:if="${Cv !=null}" data-toggle="modal" data-target="#exampleModal" >Xóa cv</a>
                         </div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa ?</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Cv : <span th:text="${Cv.fileName}"></span>
-                                        <form action="/user/deleteCv" method="post">
-                                            <div class="modal-footer mt-1">
-                                                <input type="hidden" th:value="${Cv.id}" name="idCv">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                <button type="submit" class="btn btn-danger">Xóa</button>
-                                            </div>
-                                        </form>
-                                    </div>
 
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-lg-4">
                             <div class="row">
                                 <div class="col-6">
@@ -218,6 +195,30 @@
             </form>
         </div>
     </section>
+<!-- Modal -->
+<div class="modal fade" th:if="${Cv !=null}" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Cv : <span th:text="${Cv.fileName}"></span>
+                <form action="/user/deleteCv" method="post">
+                    <div class="modal-footer mt-1">
+                        <input type="hidden" th:value="${Cv.id}" name="idCv">
+                        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 <section th:if="${userInformation.status == 1 && userInformation.role.id == 2}" class="site-section" style="margin-top: 10px">
     <div class="container">
         <div class="row">
