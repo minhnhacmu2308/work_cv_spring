@@ -55,4 +55,9 @@ public class CvServiceImpl implements CvService {
     public Cv lastCv() {
         return cvRepository.lastCv();
     }
+
+    @Override
+    public void deleteCv(int id) {
+        cvRepository.deleteById(id);
+    }
 }

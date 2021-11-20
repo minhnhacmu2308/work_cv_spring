@@ -22,4 +22,6 @@ public interface CvService {
     Cv getCvbyFileName(String fileName);
 
     Cv lastCv();
+
+    void deleteCv(int id);
 }

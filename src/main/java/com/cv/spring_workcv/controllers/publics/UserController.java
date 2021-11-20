@@ -200,14 +200,18 @@ public class UserController {
         ModelAndView mv = new ModelAndView(url);
         return mv;
     }
-//    @GetMapping("/downloadFile/{fileId}")
-//    public ResponseEntity<Resource> downloadFile(@PathVariable Integer fileId){
-//        Cv cv = cvService.getFileById(fileId);
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.parseMediaType(cv.getFileType()))
-//                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment:filename=\""+cv.getFileName()+"\"")
-//                .body(new ByteArrayResource(cv.getData()));
-//    }
 
+    @PostMapping("/deleteCv")
+    public ModelAndView deleteCv(HttpServletRequest request,RedirectAttributes rd){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+        String id = request.getParameter("idCv");
+        cvService.deleteCv(Integer.parseInt(id));
+        rd.addFlashAttribute(CommonConstants.SUCCESS,
+                messageSource.getMessage("delete_success", null, Locale.getDefault()));
+        String url = "redirect:profile/" + user.getId();
+        ModelAndView mv = new ModelAndView(url);
+        return mv;
+    }
 
 }

@@ -83,8 +83,8 @@
                         Chọn ảnh<input type="file" name="file" id="fileUpload" hidden>
                     </label>
                 </div>
-                <div style="margin-left: 0px" id="divImage" th:if="${userInformation.image != null}">
-                    <img id="avatar" height="100" width="100" style="border-radius: 50px" th:src="${userInformation.image}">
+                <div style="margin-left: 0px" id="divImage" >
+                    <img id="avatar" height="100" width="100" style="border-radius: 50px" th:src="${userInformation.image != null ? userInformation.image : 'https://st.quantrimang.com/photos/image/072015/22/avatar.jpg'}">
                 </div>
             </div>
         </div>
@@ -131,6 +131,31 @@
                             </div>
                             <p th:text="${Cv != null ? Cv.fileName :null}"></p>
                             <a th:if="${Cv !=null}" th:href="${'http://localhost:8080/resources/uploads/'} +${Cv.fileName}" >Xem cv</a>
+                            <a style="color: red;margin-left: 20px" th:if="${Cv !=null}" data-toggle="modal" data-target="#exampleModal" >Xóa cv</a>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa ?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Cv : <span th:text="${Cv.fileName}"></span>
+                                        <form action="/user/deleteCv" method="post">
+                                            <div class="modal-footer mt-1">
+                                                <input type="hidden" th:value="${Cv.id}" name="idCv">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="row">
