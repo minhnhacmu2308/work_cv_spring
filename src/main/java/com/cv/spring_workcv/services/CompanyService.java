@@ -16,4 +16,7 @@ public interface CompanyService {
     Company save(Company company);
 
     List<Object[]> getAll();
+
+    Company findCompanyById(int id);
+
 }

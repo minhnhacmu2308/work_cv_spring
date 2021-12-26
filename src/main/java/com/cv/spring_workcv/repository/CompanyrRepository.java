@@ -15,4 +15,8 @@ public interface CompanyrRepository extends JpaRepository<Company, Integer> {
 
     @Query(value = "SELECT a.id as 'id',a.name_company as 'name_company',a.logo as 'logo',COUNT(b.id) as 'openPosition' FROM company as a, recruitment as b WHERE a.id = b.company_id GROUP BY b.company_id ORDER BY COUNT(b.id) DESC LIMIT 5",nativeQuery = true)
     List<Object[]> getAll();
+
+    Company findCompanyById(int id);
+
+    Company save(Company company);
 }

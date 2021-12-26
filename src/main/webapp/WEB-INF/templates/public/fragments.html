@@ -47,7 +47,7 @@
   <script th:src="@{/user/assets/js/google-map.js}"></script>
   <script th:src="@{/user/assets/js/main.js}"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 
@@ -79,12 +79,12 @@
 
           </ul></li>
         <th:block th:if="${session.user}">
-          <li th:if="${session.user.role.id == 1}" style="width: 50px"></li>
-        </th:block>
-        <th:block th:if="${session.user}">
-          <li th:if="${session.user.role.id == 2}"  class="nav-item cta mr-md-1"><a href="/recruitment/post" class="nav-link">Đăng tuyển</a></li>
+          <li th:if="${session.user.role.id == 1 }" style="width: 100px"></li>
         </th:block>
 
+        <th:block th:if="${session.user}">
+          <li th:if="${session.user.role.id == 2 }" class="nav-item cta mr-md-1"><a href="new-post.html" class="nav-link">Đăng tuyển</a></li>
+        </th:block>
         <li th:unless="${session.user}" class="nav-item cta cta-colored"><a href="/auth/login" class="nav-link">Đăng nhập</a></li>
 
       </ul>

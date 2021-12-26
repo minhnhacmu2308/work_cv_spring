@@ -1,13 +1,8 @@
 package com.cv.spring_workcv.controllers.publics;
 
 import com.cv.spring_workcv.constant.CommonConstants;
-import com.cv.spring_workcv.domain.Company;
-import com.cv.spring_workcv.domain.Recruitment;
-import com.cv.spring_workcv.domain.User;
-import com.cv.spring_workcv.services.CatergoryService;
-import com.cv.spring_workcv.services.CompanyService;
-import com.cv.spring_workcv.services.RecruitmentService;
-import com.cv.spring_workcv.services.UserService;
+import com.cv.spring_workcv.domain.*;
+import com.cv.spring_workcv.services.*;
 import com.cv.spring_workcv.utils.FileUtil;
 import com.cv.spring_workcv.utils.Middleware;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -49,6 +45,11 @@ public class CompanyController {
 
     @Autowired
     CatergoryService catergoryService;
+
+    @Autowired
+    FollowCompanyService followCompanyService;
+
+    Middleware middleware = new Middleware();
 
     @PostMapping("/update-company")
     public ModelAndView updateProfile(@ModelAttribute("company") Company company, HttpServletRequest request,  RedirectAttributes rd, @RequestParam("file") MultipartFile file){
@@ -98,5 +99,38 @@ public class CompanyController {
             mv = new ModelAndView("redirect:/auth/login");
         }
         return mv;
+    }
+
+    @GetMapping("/detail-company/{id}")
+    public ModelAndView getDetail(@PathVariable int id,HttpServletRequest request){
+        ModelAndView mv = new ModelAndView("public/detail-company");
+        Company company = companyService.findCompanyById(id);
+        mv.addObject("company",company);
+        return mv;
+    }
+
+    @PostMapping("/follow-company")
+    public @ResponseBody String save(HttpServletRequest request){
+
+        boolean check = middleware.middleware(request);
+        if(check){
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            String idCompany = request.getParameter("idCompany");
+            Company company = companyService.findCompanyById(Integer.parseInt(idCompany));
+            FollowCompany checkFl = followCompanyService.findFollowCompanyByCompanyAndUser(company,user);
+            if (Objects.nonNull(checkFl))  {
+                return "exist";
+            }else{
+                FollowCompany fl = new FollowCompany();
+                fl.setUser(user);
+                fl.setCompany(company);
+                followCompanyService.save(fl);
+                return "true";
+            }
+        }else{
+            return "false";
+        }
+
     }
 }

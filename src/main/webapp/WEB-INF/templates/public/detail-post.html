@@ -76,17 +76,18 @@
                     <div>
                         <h2 th:text="${recruitment.title}"></h2>
                         <div>
-                            <span class="icon-briefcase mr-2"></span><span th:text="${recruitment.company.nameCompany}" class="ml-0 mr-2 mb-2"></span>
+                            <span class="icon-briefcase mr-2"></span><a th:href="${'/user/detail-company/'}+${recruitment.company.id}" th:text="${recruitment.company.nameCompany}" class="ml-0 mr-2 mb-2"></a>
                             <span  class="icon-room mr-2"></span ><span th:text="${recruitment.address}" class="m-2"></span>
                             <span class="icon-clock-o mr-2"></span><span class="m-2" th:text="${recruitment.type}"></span>
                         </div>
+                        <input type="hidden" th:id="${'idRe'}+${recruitment.id}" th:value="${recruitment.id}">
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="row">
                     <div class="col-6">
-                        <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
+                        <a th:onclick="'save(' +${recruitment.id}+ ')'" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
                     </div>
                     <div class="col-6">
                         <a href="#" class="btn btn-block btn-primary btn-md">Ứng tuyển</a>
@@ -182,6 +183,7 @@
 <!--                    </div>-->
 <!--                </div>-->
             </div>
+
             <div class="col-lg-4 sidebar">
                 <div class="sidebar-box bg-white p-4 ftco-animate">
                     <h3 class="heading-sidebar">Browse Category</h3>
@@ -258,7 +260,56 @@
             </div><!-- end -->
         </th:block>
 
-
+        <script>
+            function save(id){
+                var name = "#idRe" +id;
+                var idRe = $(name).val();
+                var formData = new FormData();
+                formData.append('idRe', idRe);
+                $.ajax(
+                    {
+                        type: 'POST',
+                        url: '/save-job/save/',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (data) {
+                            if(data == "false"){
+                                swal({
+                                    title: 'Bạn cần phải đăng nhập!',
+                                    /* text: 'Redirecting...', */
+                                    icon: 'error',
+                                    timer: 3000,
+                                    buttons: true,
+                                    type: 'error'
+                                })
+                            }else if(data == "true"){
+                                swal({
+                                    title: 'Lưu thành công!',
+                                    /* text: 'Redirecting...', */
+                                    icon: 'success',
+                                    timer: 3000,
+                                    buttons: true,
+                                    type: 'success'
+                                })
+                            }else{
+                                swal({
+                                    title: 'Bạn đã lưu bài này rồi!',
+                                    /* text: 'Redirecting...', */
+                                    icon: 'error',
+                                    timer: 3000,
+                                    buttons: true,
+                                    type: 'error'
+                                })
+                            }
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    }
+                )
+            }
+        </script>
 
     </div>
 </section>
