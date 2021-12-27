@@ -3,6 +3,7 @@ package com.cv.spring_workcv.repository;
 import com.cv.spring_workcv.domain.ApplyPost;
 import com.cv.spring_workcv.domain.FollowCompany;
 import com.cv.spring_workcv.domain.Recruitment;
+import com.cv.spring_workcv.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,5 +11,9 @@ import java.util.List;
 public interface ApplyPostRepository extends JpaRepository<ApplyPost, Integer> {
 
     List<ApplyPost> findApplyPostByRecruitment(Recruitment recruitment);
+
+    ApplyPost save(ApplyPost applyPost);
+
+    ApplyPost findApplyPostByRecruitmentAndUser(Recruitment recruitment, User user);
 
 }

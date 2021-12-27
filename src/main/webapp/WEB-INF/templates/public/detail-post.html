@@ -90,7 +90,7 @@
                         <a th:onclick="'save(' +${recruitment.id}+ ')'" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
                     </div>
                     <div class="col-6">
-                        <a href="#" class="btn btn-block btn-primary btn-md">Ứng tuyển</a>
+                        <a data-toggle="modal" th:data-target="${'#exampleModal'}+${recruitment.id}" class="btn btn-block btn-primary btn-md">Ứng tuyển</a>
                     </div>
                 </div>
             </div>
@@ -133,7 +133,43 @@
         </div>
     </div>
 </section>
+<!-- Modal -->
+<div class="modal fade" th:id="${'exampleModal'}+${recruitment.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ứng tuyển: <span th:text="${recruitment.title}"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/user/apply-job">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="fileUpload"
+                                   class="col-form-label">Chọn cv:</label>
+                            <input type="file" class="form-control"
+                                   th:id="${'fileUpload'}+${recruitment.id}" name="file"   required>
+                            <label for="fileUpload"
+                                   class="col-form-label">Giới thiệu:</label>
+                            <textarea rows="10" cols="3" class="form-control"  th:id="${'text'}+${recruitment.id}" >
 
+                                                    </textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" th:onclick="'apply(' +${recruitment.id}+ ')'" class="btn btn-primary">Nộp</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
 <section class="site-section" id="next">
     <div class="container">
 
@@ -261,6 +297,81 @@
         </th:block>
 
         <script>
+
+            function apply(id){
+                var name = "#idRe" +id;
+                var nameModal = "#exampleModal" +id;
+                var nameFile = "#fileUpload"+id;
+                var nameText = "#text" +id;
+                var idRe = $(name).val();
+                var textvalue = $(nameText).val();
+                var fileUpload = $(nameFile).get(0);
+                var files = fileUpload.files;
+                var formData = new FormData();
+                formData.append('file', files[0]);
+                formData.append('idRe', idRe);
+                formData.append('text', textvalue);
+                if(files[0] == null){
+                    swal({
+                        title: 'Bạn cần phải chọn cv!',
+                        /* text: 'Redirecting...', */
+                        icon: 'error',
+                        timer: 3000,
+                        buttons: true,
+                        type: 'error'
+                    })
+                } else {
+                    $.ajax(
+                        {
+                            type: 'POST',
+                            url: '/user/apply-job/',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (data) {
+                                if(data == "false"){
+                                    swal({
+                                        title: 'Bạn cần phải đăng nhập!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'error',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'error'
+                                    })
+                                }else if(data == "true"){
+                                    swal({
+                                        title: 'Ứng tuyển thành công!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'success',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'success'
+                                    })
+                                    $(nameModal).modal('hide');
+                                    $('#fileUpload').val("");
+                                }else{
+                                    swal({
+                                        title: 'Bạn đã ứng tuyển công việc này!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'error',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'error'
+                                    })
+                                    $(nameModal).modal('hide');
+                                    $('#fileUpload').val("");
+                                }
+                            },
+                            error: function (err) {
+                                alert(err);
+                            }
+                        }
+                    )
+                }
+
+            }
+
+
             function save(id){
                 var name = "#idRe" +id;
                 var idRe = $(name).val();

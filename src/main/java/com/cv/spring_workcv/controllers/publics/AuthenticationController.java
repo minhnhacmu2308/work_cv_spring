@@ -90,9 +90,9 @@ public class AuthenticationController {
         }
         return mv;
     }
-    @GetMapping(value = "logout")
+    @GetMapping(value = "/logout")
     public ModelAndView getLogout(HttpServletRequest request){
-        ModelAndView mv = new ModelAndView("redirect:/");
+        ModelAndView mv = new ModelAndView("redirect:/auth/login");
         HttpSession session = request.getSession(false);
         session.invalidate();
         return mv;

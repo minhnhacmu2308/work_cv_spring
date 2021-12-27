@@ -70,10 +70,10 @@
           <ul class="dropdown">
             <li><a th:href="@{'/user/profile/'+ ${session.user.id}}">Hồ Sơ</a></li>
             <li><a href="service-single.html">Đổi mật khẩu</a></li>
-            <li th:if="${session.user.role.id == 1}"><a href="/auth/logout" >Công việc đã lưu</a></li>
+            <li th:if="${session.user.role.id == 1}"><a href="/save-job/get-list" >Công việc đã lưu</a></li>
             <li th:if="${session.user.role.id == 2}"><a href="/user/list-post" >Danh sách bài đăng</a></li>
             <li th:if="${session.user.role.id == 1}"><a href="/auth/logout" >Công việc đã ứng tuyển</a></li>
-            <li th:if="${session.user.role.id == 1}"><a href="/auth/logout" >Công ty đã theo dõi</a></li>
+            <li th:if="${session.user.role.id == 1}"><a href="/user/get-list-company" >Công ty đã theo dõi</a></li>
             <li th:if="${session.user.role.id == 2}"><a href="/auth/logout" >Ứng cử viên tiềm năng</a></li>
             <li><a href="/auth/logout" >Đăng xuất</a></li>
 

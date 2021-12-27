@@ -131,6 +131,39 @@ public class CompanyController {
         }else{
             return "false";
         }
+    }
 
+    @GetMapping("/get-list-company")
+    public ModelAndView getList(HttpServletRequest request, Model model, @RequestParam("page") Optional<Integer> page){
+        boolean check = middleware.middleware(request);
+        ModelAndView mv = new ModelAndView();
+        if (check){
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            mv = new ModelAndView("public/list-follow-company");
+            Pageable pageable = PageRequest.of(page.orElse(0), 5);
+            Page<FollowCompany> saveJobs = followCompanyService.findFollowCompanyByUser(user,pageable);
+            List<FollowCompany> saveJobList = followCompanyService.findFollowCompanyByUser(user);
+            int numberPage = saveJobList.size() / 5;
+            if (saveJobList.size() % 5 != 0){
+                numberPage = numberPage +1;
+            }
+            List<FollowCompany> saveJobSize = saveJobList.stream().limit(numberPage).collect(Collectors.toList());
+            mv.addObject("saveJobList",saveJobs);
+            model.addAttribute("recruitmentList", saveJobSize);
+            mv.addObject("numberPage",page.orElse(0).intValue());
+        }else{
+            mv = new ModelAndView("redirect:/");
+        }
+        return mv;
+    }
+
+    @GetMapping("/delete-follow/{id}")
+    public  ModelAndView delete(@PathVariable int id, RedirectAttributes rd){
+        ModelAndView mv = new ModelAndView("redirect:/user/get-list-company");
+        followCompanyService.deleteById(id);
+        rd.addFlashAttribute(CommonConstants.SUCCESS,
+                messageSource.getMessage("login_success", null, Locale.getDefault()));
+        return mv;
     }
 }

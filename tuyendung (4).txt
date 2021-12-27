@@ -11,9 +11,9 @@
 - đăng ký tài khoản, login, logout (done)
 - chức năng tìm việc (tìm kiếm theo công việc, địa điểm)
 - chức năng tạo cv (upload file pdf)(done)
-- chức năng ứng tuyển
+- chức năng ứng tuyển (done)
 - chức năng theo dõi công việc, theo dõi công ty (done)
-- Quản lý các việc đã ứng tuyển, đã theo dõi
+- Quản lý các việc đã ứng tuyển, đã theo dõi(done)
 - check permision
 
 

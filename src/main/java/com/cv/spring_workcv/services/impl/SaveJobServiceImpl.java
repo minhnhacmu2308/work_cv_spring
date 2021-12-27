@@ -9,6 +9,8 @@ import com.cv.spring_workcv.repository.SaveJobRepository;
 import com.cv.spring_workcv.services.ApplyPostService;
 import com.cv.spring_workcv.services.SaveJobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +33,20 @@ public class SaveJobServiceImpl implements SaveJobService {
     @Override
     public SaveJob findSaveJobByUserAndRecruitment(User user, Recruitment recruitment) {
         return saveJobRepository.findSaveJobByUserAndRecruitment(user,recruitment);
+    }
+
+    @Override
+    public List<SaveJob> findSaveJobByUser(User user) {
+        return saveJobRepository.findSaveJobByUser(user);
+    }
+
+    @Override
+    public Page<SaveJob> findSaveJobByUser(User user, Pageable pageable) {
+        return saveJobRepository.findSaveJobByUser(user,pageable);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        saveJobRepository.deleteById(id);
     }
 }

@@ -18,6 +18,12 @@ public class ApplyPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "name_cv")
+    private String nameCv;
+
+    @Column(name = "text")
+    private String text;
+
     @OneToOne(
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
