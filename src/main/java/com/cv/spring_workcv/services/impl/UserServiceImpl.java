@@ -5,6 +5,8 @@ import com.cv.spring_workcv.repository.UserRepository;
 import com.cv.spring_workcv.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,5 +66,15 @@ public class UserServiceImpl implements UserService {
             log.error("Error at [checkLogin]", e);
         }
         return null;
+    }
+
+    @Override
+    public Page<User> findUserByFullNameContaining(String keySearch, Pageable pageable) {
+        return userRepository.findUserByFullNameContaining(keySearch,pageable);
+    }
+
+    @Override
+    public List<User> findUserByFullNameContaining(String keySearch) {
+        return userRepository.findUserByFullNameContaining(keySearch);
     }
 }

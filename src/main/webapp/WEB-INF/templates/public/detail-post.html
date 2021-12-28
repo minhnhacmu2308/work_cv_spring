@@ -13,7 +13,19 @@
 </nav>
 <!-- END nav -->
 
-
+<!-- END nav -->
+<div th:if="${success}" class="toast" data-delay="2000" style="position:fixed;top: 100PX; right: 10PX;z-index: 2000;width: 300px">
+    <script>
+        swal({
+            title: 'Duyệt thành công!',
+            /* text: 'Redirecting...', */
+            icon: 'success',
+            timer: 3000,
+            buttons: true,
+            type: 'success'
+        })
+    </script>
+</div>
 
 <div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
@@ -188,11 +200,16 @@
                             <div class="team d-md-flex p-4 bg-white">
                                 <IMG class="img" th:src="${applyPost.user.image != null ? applyPost.user.image : 'https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-default-avatar-image_2237213.jpg'}"></IMG>
                                 <div class="text pl-md-4">
-                                    <span class="location mb-0" th:text="${applyPost.user.address}"></span>
-                                    <h2 style="display: block;color: black" th:text="${applyPost.user.fullName}"></h2>
+                                    <H5 class="location mb-0" th:text="${applyPost.user.fullName}"></H5>
+                                    <p style="display: block;color: black" th:text="${applyPost.user.address}"></p>
                                     <span class="position" style="display: block;color: black" th:text="${applyPost.user.email}"></span>
                                     <p class="mb-4" style="width: 700px" th:utext="${applyPost.user.description}">.</p>
-                                    <p><a href="#" th:if="${applyPost.user.cv.fileName != null}" class="btn btn-primary" th:href="${'http://localhost:8080/resources/uploads/'} +${applyPost.user.cv.fileName}" >Xem cv</a></p>
+                                    <div class="row">
+                                        <p><a href="#" th:if="${applyPost.nameCv != null}" class="btn btn-primary" th:href="${'http://localhost:8080/resources/uploads/'} +${applyPost.nameCv}" >Xem cv</a></p>
+                                        <p th:if="${applyPost.status == 0}" style="margin-left: 10px"><a class="btn btn-outline-primary" th:href="${'/user/approve/'} +${applyPost.user.id} +${'/'} +${recruitment.id}" >Duyệt</a></p>
+                                        <p th:if="${applyPost.status == 1}" style="margin-left: 10px;margin-top: 15px"><span style="color: #1e7e34;font-weight: bold" >Đã duyệt</span></p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

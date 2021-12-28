@@ -46,12 +46,12 @@ public class User {
     @JoinColumn(name = "role_id",referencedColumnName = "id")
     private Role role;
 
-    /*@OneToOne(
+    @OneToOne(
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
-    )*/
-    /*@JoinColumn(name = "cv_id",referencedColumnName = "id")
-    private Cv cv;*/
+    )
+    @JoinColumn(name = "cv_id",referencedColumnName = "id")
+    private Cv cv;
 
     @OneToMany(mappedBy = "company")
     private List<Recruitment> recruitments;

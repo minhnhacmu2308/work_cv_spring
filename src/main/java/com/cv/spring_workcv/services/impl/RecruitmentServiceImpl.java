@@ -100,4 +100,14 @@ public class RecruitmentServiceImpl implements RecruitmentService {
             log.error("Error at [save]", e);
         }
     }
+
+    @Override
+    public Page<Recruitment> findRecruitmentByTitleContaining(String keySearch, Pageable pageable) {
+        return recruitmentRepository.findRecruitmentByTitleContaining(keySearch, pageable);
+    }
+
+    @Override
+    public List<Recruitment> findRecruitmentByTitleContaining(String keySearch) {
+        return recruitmentRepository.findRecruitmentByTitleContaining(keySearch);
+    }
 }

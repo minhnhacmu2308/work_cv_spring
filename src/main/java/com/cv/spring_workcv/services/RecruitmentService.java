@@ -30,4 +30,8 @@ public interface RecruitmentService{
     List<Recruitment> getAll();
 
     void delete(int id);
+
+    Page<Recruitment> findRecruitmentByTitleContaining(String keySearch,Pageable pageable);
+
+    List<Recruitment> findRecruitmentByTitleContaining(String keySearch);
 }

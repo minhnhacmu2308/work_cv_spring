@@ -40,4 +40,7 @@ public class ApplyPost {
 
     @Column(name = "createdAt")
     private String createdAt;
+
+    @Column(name = "status")
+    private int status;
 }

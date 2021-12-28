@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -58,6 +62,7 @@ public class UserController {
 
     @Autowired
     CompanyService companyService;
+
 
     @Autowired
     public JavaMailSenderImpl javaMailSenderImpl;
@@ -173,7 +178,7 @@ public class UserController {
     }
 
     @PostMapping("/uploadCv")
-    public ModelAndView uploadCv(@RequestParam("file") MultipartFile file,HttpServletRequest request){
+    public ModelAndView uploadCv(@RequestParam("file") MultipartFile file,HttpServletRequest request,RedirectAttributes rd){
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
         String name =  FileUtil.uploadPdf(request,file);
@@ -198,6 +203,8 @@ public class UserController {
         }
         String url = "redirect:profile/" + user.getId();
         ModelAndView mv = new ModelAndView(url);
+        rd.addFlashAttribute(CommonConstants.SUCCESS,
+                messageSource.getMessage("update_success", null, Locale.getDefault()));
         return mv;
     }
 
@@ -213,5 +220,58 @@ public class UserController {
         ModelAndView mv = new ModelAndView(url);
         return mv;
     }
+
+    @PostMapping("/search")
+    public ModelAndView search(@RequestParam("keySearch") String keySearch, HttpServletRequest request, Model model, @RequestParam("page") Optional<Integer> page){
+        String url = "redirect:/user/search/" + keySearch;
+        ModelAndView mv = new ModelAndView(url);
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
+        Page<User> recruitments = userService.findUserByFullNameContaining(keySearch,pageable);
+        List<User> recruitmentList = userService.findUserByFullNameContaining(keySearch);
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<User> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+        mv.addObject("list", recruitments);
+        mv.addObject("keySearch", keySearch);
+        model.addAttribute("recruitmentList", recruitmentSize);
+        mv.addObject("numberPage",page.orElse(0).intValue());
+        return mv;
+    }
+
+    @GetMapping("/search/{keySearch}")
+    public ModelAndView getSearch(@PathVariable String keySearch, HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
+        ModelAndView mv = new ModelAndView("public/result-search-user");
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
+        Page<User> recruitments = userService.findUserByFullNameContaining(keySearch,pageable);
+        List<User> recruitmentList = userService.findUserByFullNameContaining(keySearch);
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<User> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+        mv.addObject("list", recruitments);
+        mv.addObject("keySearch", keySearch);
+        model.addAttribute("recruitmentList", recruitmentSize);
+        mv.addObject("numberPage",page.orElse(0).intValue());
+        return mv;
+    }
+
+    @GetMapping("/getCv/{idUser}")
+    public ModelAndView getCv(@PathVariable int idUser,RedirectAttributes rd){
+        User user = userService.getUserById(idUser);
+        Cv cv = cvService.getFile(user);
+        ModelAndView mv = new ModelAndView();
+        if(cv != null){
+            String url = "redirect:/resources/uploads/" + cv.getFileName();
+            mv = new ModelAndView(url);
+        }else{
+            rd.addFlashAttribute(CommonConstants.SUCCESS,
+                    messageSource.getMessage("delete_success", null, Locale.getDefault()));
+        }
+        return mv;
+    }
+
 
 }

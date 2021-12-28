@@ -5,7 +5,7 @@
 - đăng ký tài khoản,login, logout - done
 - Trang thông tin công ty (đăng ký thông tin công ty, update thông tin công ty) - done
 - Quản lý đăng tin tuyển dụng - done
-- Quản lý ứng viên
+- Quản lý ứng viên - done
 - Đăng tin tuyển dụng - done
 3.Người tìm việc
 - đăng ký tài khoản, login, logout (done)
