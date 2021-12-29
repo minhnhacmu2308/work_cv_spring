@@ -25,14 +25,16 @@ public interface RecruitmentRepository extends PagingAndSortingRepository<Recrui
 
      Recruitment findRecruitmentById(int id);
 
-     List<Recruitment> findRecruitmentByCategory(Category category);
-
      @Query(value = "SELECT * FROM recruitment ORDER BY created_at DESC",nativeQuery = true)
      Page<Recruitment> getList(Pageable pageable);
 
      Page<Recruitment> findRecruitmentByTitleContaining(String keySearch,Pageable pageable);
 
      List<Recruitment> findRecruitmentByTitleContaining(String keySearch);
+
+     Page<Recruitment> findRecruitmentByCategory(Category category,Pageable pageable);
+
+     List<Recruitment> findRecruitmentByCategory(Category category);
 
 
 

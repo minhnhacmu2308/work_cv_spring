@@ -110,4 +110,14 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     public List<Recruitment> findRecruitmentByTitleContaining(String keySearch) {
         return recruitmentRepository.findRecruitmentByTitleContaining(keySearch);
     }
+
+    @Override
+    public Page<Recruitment> findRecruitmentByCategory(Category category, Pageable pageable) {
+        return recruitmentRepository.findRecruitmentByCategory(category, pageable);
+    }
+
+    @Override
+    public List<Recruitment> findRecruitmentByCategory(Category category) {
+        return recruitmentRepository.findRecruitmentByCategory(category);
+    }
 }

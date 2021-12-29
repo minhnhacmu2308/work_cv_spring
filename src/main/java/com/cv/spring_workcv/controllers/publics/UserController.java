@@ -2,27 +2,19 @@ package com.cv.spring_workcv.controllers.publics;
 
 import com.cloudinary.Cloudinary;
 import com.cv.spring_workcv.constant.CommonConstants;
-import com.cv.spring_workcv.domain.Company;
-import com.cv.spring_workcv.domain.Cv;
-import com.cv.spring_workcv.domain.Recruitment;
-import com.cv.spring_workcv.domain.User;
+import com.cv.spring_workcv.domain.*;
 import com.cv.spring_workcv.services.CompanyService;
 import com.cv.spring_workcv.services.CvService;
+import com.cv.spring_workcv.services.RoleService;
 import com.cv.spring_workcv.services.UserService;
 import com.cv.spring_workcv.utils.FileUtil;
 import com.cv.spring_workcv.utils.MailUtil;
 import com.cv.spring_workcv.utils.Middleware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
@@ -30,15 +22,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.util.ObjectUtils;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -62,6 +50,9 @@ public class UserController {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    RoleService roleService;
 
 
     @Autowired
@@ -189,10 +180,10 @@ public class UserController {
             cv.setUser(user);
             cv.setFileName(name);
             cvService.save(cv);
-            /*Cv cv1 = cvService.lastCv();
-            User userAdd = userService.getUserById(cv1.getUser().getId());
-            userAdd.setCv(cv1);
-            userService.save(userAdd);*/
+            Cv cv1 = cvService.lastCv();
+            System.out.println(cv1.getFileName());
+            user.setCv(cv1);
+            userService.save(user);
         } else {
             check.setFileName(name);
             cvService.save(check);
@@ -273,5 +264,23 @@ public class UserController {
         return mv;
     }
 
+    @GetMapping("/list-candidate")
+    public ModelAndView getCandidate(HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
+        ModelAndView mv = new ModelAndView("public/list-user");
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
+        Role role = roleService.getRoleById(1);
+        Page<User> recruitments = userService.findAllByRole(role,pageable);
+        List<User> recruitmentList = userService.findAllByRole(role);
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<User> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+        mv.addObject("list", recruitments);
+        mv.addObject("activeUser",true);
+        model.addAttribute("recruitmentList", recruitmentSize);
+        mv.addObject("numberPage",page.orElse(0).intValue());
+        return mv;
+    }
 
 }

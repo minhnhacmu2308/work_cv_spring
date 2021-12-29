@@ -108,6 +108,26 @@ public class RecruitmentController {
         return mv;
     }
 
+    @GetMapping("/category/{idCategory}")
+    public ModelAndView getCategory(@PathVariable int idCategory, HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
+        ModelAndView mv = new ModelAndView("public/list-re");
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
+        Category category = catergoryService.getCategoryById(idCategory);
+        Page<Recruitment> recruitments = recruitmentService.findRecruitmentByCategory(category,pageable);
+        List<Recruitment> recruitmentList = recruitmentService.findRecruitmentByCategory(category);
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+        mv.addObject("saveJobList", recruitments);
+        model.addAttribute("recruitmentList", recruitmentSize);
+        model.addAttribute("nameCategory", category.getName());
+        model.addAttribute("category", category);
+        mv.addObject("numberPage",page.orElse(0).intValue());
+        return mv;
+    }
+
     @GetMapping({"/post" })
     public ModelAndView postRecruitment(Model model)
     {
@@ -146,6 +166,7 @@ public class RecruitmentController {
             recruitment.setStatus(1);
             recruitment.setCreatedAt(java.time.LocalDate.now().toString());
             category.setNumberChoose(category.getNumberChoose()+1);
+            catergoryService.save(category);
             recruitmentService.save(recruitment);
             rd.addFlashAttribute(CommonConstants.SUCCESS,
                     messageSource.getMessage("post_success", null, Locale.getDefault()));
@@ -210,6 +231,9 @@ public class RecruitmentController {
         if (auth) {
             if(saveJobList.size() == 0 && applyPostList.size() == 0){
                 recruitmentService.delete(idRecruiment);
+                Category category = recruitment.getCategory();
+                category.setNumberChoose(category.getNumberChoose() -1);
+                catergoryService.save(category);
                 rd.addFlashAttribute(CommonConstants.SUCCESS,
                         messageSource.getMessage("delete_success", null, Locale.getDefault()));
             }

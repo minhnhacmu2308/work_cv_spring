@@ -1,5 +1,6 @@
 package com.cv.spring_workcv.services.impl;
 
+import com.cv.spring_workcv.domain.Role;
 import com.cv.spring_workcv.domain.User;
 import com.cv.spring_workcv.repository.UserRepository;
 import com.cv.spring_workcv.services.UserService;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(int id) {
         try {
-            return userRepository.getById(id);
+            return userRepository.findUserById(id);
         } catch (Exception e) {
             log.error("Error at [checkLogin]", e);
         }
@@ -76,5 +77,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findUserByFullNameContaining(String keySearch) {
         return userRepository.findUserByFullNameContaining(keySearch);
+    }
+
+    @Override
+    public List<User> findAllByRole(Role role) {
+        return userRepository.findAllByRole(role);
+    }
+
+    @Override
+    public Page<User> findAllByRole(Role role, Pageable pageable) {
+        return userRepository.findAllByRole(role,pageable);
     }
 }

@@ -212,7 +212,7 @@
             <div class="col-md-3 ">
                 <ul class="category text-center">
 
-                    <li><a style="text-decoration: none !important;" href="#"> <p th:text="${categorie.name}"></p><span class="number" th:text="${categorie.numberChoose}"></span> <span>Vị trí</span><i class="ion-ios-arrow-forward"></i></a></li>
+                    <li><a style="text-decoration: none !important;" th:href="${'/recruitment/category/'}+${categorie.id}"> <p th:text="${categorie.name}"></p><span class="number" th:text="${categorie.numberChoose}"></span> <span>Vị trí</span><i class="ion-ios-arrow-forward"></i></a></li>
                 </ul>
             </div>
             </th:block>
@@ -288,8 +288,16 @@
                                     </div>
                                 </div>
                                 <input type="hidden" th:id="${'idRe'}+${recruitment.id}" th:value="${recruitment.id}">
-                                <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
-                                    <div>
+                                <div th:if="${session.user}" class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
+                                    <div th:if="${session.user.role.id == 1}">
+                                        <a  th:onclick="'save(' +${recruitment.id}+ ')'" class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
+                                            <span class="icon-heart"></span>
+                                        </a>
+                                    </div>
+                                    <a th:if="${session.user.role.id == 1}" data-toggle="modal" th:data-target="${'#exampleModal'}+${recruitment.id}" class="btn btn-primary py-2">Apply Job</a>
+                                </div>
+                                <div th:unless="${session.user}" class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
+                                    <div >
                                         <a  th:onclick="'save(' +${recruitment.id}+ ')'" class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
                                             <span class="icon-heart"></span>
                                         </a>

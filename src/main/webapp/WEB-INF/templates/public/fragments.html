@@ -62,8 +62,8 @@
       <ul class="navbar-nav ml-auto">
         <li th:class="${activeHome}? 'nav-item active' :'nav-item'"><a href="/" class="nav-link">Trang chủ</a></li>
         <li th:class="${activeRe} ? 'nav-item active' :'nav-item'"><a href="/recruitment/index" class="nav-link">Công việc</a></li>
-        <li class="nav-item"><a href="candidates.html" class="nav-link">Ứng cử viên</a></li>
-        <li class="nav-item"><a href="blog.html" class="nav-link">Công ty</a></li>
+        <li th:class="${activeUser} ? 'nav-item active' :'nav-item'"><a href="/user/list-candidate" class="nav-link">Ứng cử viên</a></li>
+<!--        <li class="nav-item"><a href="blog.html" class="nav-link">Công ty</a></li>-->
 
         <li th:if="${session.user}" class="nav-item"><a th:href="@{'/user/profile/'+${session.user.id}}" th:text="${session.user.fullName}" class="nav-link" ></a>
 

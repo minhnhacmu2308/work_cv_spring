@@ -4,12 +4,15 @@ import com.cv.spring_workcv.domain.Company;
 import com.cv.spring_workcv.domain.FollowCompany;
 import com.cv.spring_workcv.domain.User;
 import com.cv.spring_workcv.models.CompanyDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface CompanyrRepository extends JpaRepository<Company, Integer> {
+public interface CompanyrRepository extends PagingAndSortingRepository<Company, Integer> {
 
     Company findCompanyByUser(User user);
 
@@ -19,4 +22,8 @@ public interface CompanyrRepository extends JpaRepository<Company, Integer> {
     Company findCompanyById(int id);
 
     Company save(Company company);
+
+    List<Company> findAll();
+
+    Page<Company> findAll(Pageable pageable);
 }

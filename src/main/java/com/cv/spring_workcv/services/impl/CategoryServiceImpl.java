@@ -35,4 +35,9 @@ public class CategoryServiceImpl implements CatergoryService {
         }
         return null;
     }
+
+    @Override
+    public Category save(Category category) {
+        return categoryRepository.save(category);
+    }
 }

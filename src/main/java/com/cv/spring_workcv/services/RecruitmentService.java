@@ -34,4 +34,8 @@ public interface RecruitmentService{
     Page<Recruitment> findRecruitmentByTitleContaining(String keySearch,Pageable pageable);
 
     List<Recruitment> findRecruitmentByTitleContaining(String keySearch);
+
+    Page<Recruitment> findRecruitmentByCategory(Category category,Pageable pageable);
+
+    List<Recruitment> findRecruitmentByCategory(Category category);
 }

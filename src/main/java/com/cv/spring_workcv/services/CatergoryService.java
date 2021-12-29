@@ -11,4 +11,6 @@ public interface CatergoryService {
     List<Category> getAll(Sort sort);
 
     Category getCategoryById(int id);
+
+    Category save(Category category);
 }

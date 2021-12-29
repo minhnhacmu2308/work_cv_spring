@@ -7,6 +7,8 @@ import com.cv.spring_workcv.repository.CompanyrRepository;
 import com.cv.spring_workcv.services.CompanyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sun.security.krb5.internal.tools.Klist;
 
@@ -47,5 +49,15 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company findCompanyById(int id) {
         return companyrRepository.findCompanyById(id);
+    }
+
+    @Override
+    public List<Company> findAll() {
+        return companyrRepository.findAll();
+    }
+
+    @Override
+    public Page<Company> findAll(Pageable pageable) {
+        return companyrRepository.findAll(pageable);
     }
 }
