@@ -129,12 +129,18 @@ public class RecruitmentController {
     }
 
     @GetMapping({"/post" })
-    public ModelAndView postRecruitment(Model model)
+    public ModelAndView postRecruitment(Model model,HttpServletRequest request)
     {
+        ModelAndView mv = new ModelAndView();
+        boolean auth = Middleware.middleware(request);
+        if (auth) {
         Sort sortCategory = Sort.by("numberChoose").descending();
         List<Category> categories = catergoryService.getAll(sortCategory).stream().collect(Collectors.toList());
         model.addAttribute("categories", categories);
-        ModelAndView mv = new ModelAndView("public/post-job");
+        mv = new ModelAndView("public/post-job");
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
+        }
         return mv;
     }
 
@@ -142,11 +148,16 @@ public class RecruitmentController {
     public ModelAndView editpostRecruitment(@PathVariable int id,HttpServletRequest request)
     {
         ModelAndView mv = new ModelAndView("public/edit-job");
+        boolean auth = Middleware.middleware(request);
+        if (auth) {
         Sort sortCategory = Sort.by("numberChoose").descending();
         List<Category> categories = catergoryService.getAll(sortCategory).stream().collect(Collectors.toList());
         Recruitment recruitment = recruitmentService.getRecruitmentById(id);
         mv.addObject("categories", categories);
         mv.addObject("recruitment", recruitment);
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
+        }
         return mv;
     }
 
