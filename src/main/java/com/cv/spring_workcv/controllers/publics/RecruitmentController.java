@@ -108,6 +108,43 @@ public class RecruitmentController {
         return mv;
     }
 
+    @PostMapping("/searchaddress")
+    public ModelAndView searchaddress(@RequestParam("keySearch") String keySearch,HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
+        String url = "redirect:/recruitment/searchaddress/" + keySearch;
+        ModelAndView mv = new ModelAndView(url);
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
+        Page<Recruitment> recruitments = recruitmentService.findRecruitmentByAddressContaining(keySearch,pageable);
+        List<Recruitment> recruitmentList = recruitmentService.findRecruitmentByAddressContaining(keySearch);
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+        mv.addObject("list", recruitments);
+        mv.addObject("keySearch", keySearch);
+        model.addAttribute("recruitmentList", recruitmentSize);
+        mv.addObject("numberPage",page.orElse(0).intValue());
+        return mv;
+    }
+
+    @GetMapping("/searchaddress/{keySearch}")
+    public ModelAndView getSearchAddress(@PathVariable String keySearch, HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
+        ModelAndView mv = new ModelAndView("public/result-search-address");
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
+        Page<Recruitment> recruitments = recruitmentService.findRecruitmentByAddressContaining(keySearch,pageable);
+        List<Recruitment> recruitmentList = recruitmentService.findRecruitmentByAddressContaining(keySearch);
+        int numberPage = recruitmentList.size() / 5;
+        if (recruitmentList.size() % 5 != 0){
+            numberPage = numberPage +1;
+        }
+        List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+        mv.addObject("list", recruitments);
+        mv.addObject("keySearch", keySearch);
+        model.addAttribute("recruitmentList", recruitmentSize);
+        mv.addObject("numberPage",page.orElse(0).intValue());
+        return mv;
+    }
+
     @GetMapping("/category/{idCategory}")
     public ModelAndView getCategory(@PathVariable int idCategory, HttpServletRequest request, Model model,@RequestParam("page") Optional<Integer> page){
         ModelAndView mv = new ModelAndView("public/list-re");

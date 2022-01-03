@@ -112,6 +112,16 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     @Override
+    public Page<Recruitment> findRecruitmentByAddressContaining(String keySearch, Pageable pageable) {
+        return recruitmentRepository.findRecruitmentByAddressContaining(keySearch, pageable);
+    }
+
+    @Override
+    public List<Recruitment> findRecruitmentByAddressContaining(String keySearch) {
+        return recruitmentRepository.findRecruitmentByAddressContaining(keySearch);
+    }
+
+    @Override
     public Page<Recruitment> findRecruitmentByCategory(Category category, Pageable pageable) {
         return recruitmentRepository.findRecruitmentByCategory(category, pageable);
     }
