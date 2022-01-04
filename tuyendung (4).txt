@@ -37,6 +37,6 @@ bắt ràng buộc định dạng pdf khi upload cv
 chức năng tìm việc (tìm kiếm theo công việc, ứng viên)- thêm tìm kiếm theo địa điểm(done)
 xóa giao diện(done)
 đưa khung tìm kiếm vào Công việc(done)
-danh sách công việc của cty đã theo dõi
+danh sách công việc của cty đã theo dõi(done)
 ----
 tìm kiếm có dấu bị

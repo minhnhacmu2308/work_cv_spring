@@ -109,6 +109,33 @@ public class CompanyController {
         return mv;
     }
 
+    @GetMapping("/company-post/{id}")
+    public ModelAndView getCompanyPost(@PathVariable int id,HttpServletRequest request,Model model,@RequestParam("page") Optional<Integer> page){
+        ModelAndView mv = new ModelAndView();
+        boolean auth = Middleware.middleware(request);
+        if (auth) {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            Company company = companyService.findCompanyById(id);
+            Sort sort = Sort.by("id").descending();
+            Pageable pageable = PageRequest.of(page.orElse(0), 5, sort);
+            Page<Recruitment> recruitments =  recruitmentService.getRecruitmentByCompany(company,pageable);
+            List<Recruitment> recruitmentList = recruitmentService.getRecruitmentByCompany(company);
+            int numberPage = recruitmentList.size() / 5;
+            if (recruitmentList.size() % 5 != 0){
+                numberPage = numberPage +1;
+            }
+            List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
+            model.addAttribute("list", recruitments);
+            model.addAttribute("recruitmentList", recruitmentSize);
+            model.addAttribute("numberPage",page.orElse(0).intValue());
+            mv = new ModelAndView("public/post-company");
+        } else {
+            mv = new ModelAndView("redirect:/auth/login");
+        }
+        return mv;
+    }
+
     @PostMapping("/follow-company")
     public @ResponseBody String save(HttpServletRequest request){
 

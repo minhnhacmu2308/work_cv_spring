@@ -67,14 +67,14 @@
                                     </div>
                                 </div>
                                 <input type="hidden" th:id="${'idRe'}+${saveJob.company.id}" th:value="${saveJob.company.id}">
-                                <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
+                                <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0" style="width:370px !important;">
                                     <div>
                                         <a  th:href="${'/user/delete-follow/'}+${saveJob.id}" class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
                                             <span class="icon-delete"></span>
                                         </a>
                                     </div>
                                     <a th:href="${'/user/detail-company/'}+${saveJob.company.id}" class="btn btn-primary py-2">Chi tiết</a>
-                                    <a th:href="${'/user/detail-company/'}+${saveJob.company.id}" class="btn btn-warning">Chi tiết</a>
+                                    <a th:href="${'/user/company-post/'}+${saveJob.company.id}" class="btn btn-warning py-2 ml-1">Danh sách bài đăng</a>
                                 </div>
                             </div>
                         </div><!-- end -->
