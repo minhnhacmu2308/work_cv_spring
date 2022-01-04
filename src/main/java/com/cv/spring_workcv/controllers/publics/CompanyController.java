@@ -52,18 +52,18 @@ public class CompanyController {
     Middleware middleware = new Middleware();
 
     @PostMapping("/update-company")
-    public ModelAndView updateProfile(@ModelAttribute("company") Company company, HttpServletRequest request,  RedirectAttributes rd, @RequestParam("file") MultipartFile file){
+    public ModelAndView updateProfile(@ModelAttribute("company") Company company, HttpServletRequest request,  RedirectAttributes rd){
         String user_id = request.getParameter("user_id");
         User userCheck = userService.getUserById(Integer.parseInt(user_id));
         Company company1 = companyService.getCompanyByUser(userCheck);
         company.setUser(userCheck);
-        String nameImage = "";
-        nameImage = FileUtil.uploadPdf(request,file);
-        if (nameImage == "null") {
-            company.setLogo(company1.getLogo());
-        } else {
-            company.setLogo(nameImage);
-        }
+//        String nameImage = "";
+//        nameImage = FileUtil.uploadPdf(request,file);
+//        if (nameImage == "null") {
+//            company.setLogo(company1.getLogo());
+//        } else {
+//            company.setLogo(nameImage);
+//        }
         company.setId(company.getId());
         String url = "redirect:profile/" + user_id;
         companyService.save(company);
@@ -128,6 +128,7 @@ public class CompanyController {
             List<Recruitment> recruitmentSize = recruitmentList.stream().limit(numberPage).collect(Collectors.toList());
             model.addAttribute("list", recruitments);
             model.addAttribute("recruitmentList", recruitmentSize);
+            model.addAttribute("company", company);
             model.addAttribute("numberPage",page.orElse(0).intValue());
             mv = new ModelAndView("public/post-company");
         } else {

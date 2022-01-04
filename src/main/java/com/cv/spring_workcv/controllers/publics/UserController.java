@@ -152,6 +152,31 @@ public class UserController {
         }
     }
 
+    @PostMapping("/upload-company")
+    public @ResponseBody String uploadCompany(@RequestParam("file") MultipartFile image,HttpServletRequest request){
+        Map config = new HashMap();
+        String email = request.getParameter("email");
+        User user = userService.checkEmailExist(email);
+        config.put("resource_type","auto");
+        Company company1 = companyService.getCompanyByUser(user);
+        if(image.isEmpty()) {
+            return "Error";
+        } else {
+            try {
+                    Map r = this.cloudinary.uploader().upload(image.getBytes(), config);
+                    System.out.println(r);
+                    String nameImage = (String) r.get("secure_url");
+                    company1.setLogo(nameImage);
+                    companyService.save(company1);
+                    return nameImage;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     @PostMapping("/update-profile")
     public ModelAndView updateProfile(@ModelAttribute("user") User user, RedirectAttributes rd){
         User userCheck = userService.checkEmailExist(user.getEmail());
@@ -169,34 +194,34 @@ public class UserController {
     }
 
     @PostMapping("/uploadCv")
-    public ModelAndView uploadCv(@RequestParam("file") MultipartFile file,HttpServletRequest request,RedirectAttributes rd){
+    public @ResponseBody String uploadCv(@RequestParam("file") MultipartFile file,HttpServletRequest request,RedirectAttributes rd){
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
-        String name =  FileUtil.uploadPdf(request,file);
-        Cv check = cvService.getFile(user);
-
-        if (Objects.isNull(check)) {
-            Cv cv = new Cv();
-            cv.setUser(user);
-            cv.setFileName(name);
-            cvService.save(cv);
-            Cv cv1 = cvService.lastCv();
-            System.out.println(cv1.getFileName());
-            user.setCv(cv1);
-            userService.save(user);
-        } else {
-            check.setFileName(name);
-            cvService.save(check);
-            /*Cv cv1 = cvService.lastCv();
-            User userAdd = userService.getUserById(cv1.getUser().getId());
-            userAdd.setCv(cv1);
-            userService.save(userAdd);*/
+        String fileName = file.getOriginalFilename().toUpperCase();
+        System.out.println(file.getOriginalFilename());
+        boolean extension = fileName.endsWith(".PDF");
+        System.out.println(extension);
+        if(extension){
+            String name =  FileUtil.uploadPdf(request,file);
+            Cv check = cvService.getFile(user);
+            if (Objects.isNull(check)) {
+                Cv cv = new Cv();
+                cv.setUser(user);
+                cv.setFileName(name);
+                cvService.save(cv);
+                Cv cv1 = cvService.lastCv();
+                System.out.println(cv1.getFileName());
+                user.setCv(cv1);
+                user.setStatus(1);
+                userService.save(user);
+            } else {
+                check.setFileName(name);
+                cvService.save(check);
+            }
+            return name;
+        }else{
+            return "false";
         }
-        String url = "redirect:profile/" + user.getId();
-        ModelAndView mv = new ModelAndView(url);
-        rd.addFlashAttribute(CommonConstants.SUCCESS,
-                messageSource.getMessage("update_success", null, Locale.getDefault()));
-        return mv;
     }
 
     @PostMapping("/deleteCv")
@@ -204,7 +229,9 @@ public class UserController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
         String id = request.getParameter("idCv");
-        cvService.deleteCv(Integer.parseInt(id));
+        cvService.deleteCvByUser(user);
+        user.setCv(null);
+        userService.save(user);
         rd.addFlashAttribute(CommonConstants.SUCCESS,
                 messageSource.getMessage("delete_success", null, Locale.getDefault()));
         String url = "redirect:profile/" + user.getId();

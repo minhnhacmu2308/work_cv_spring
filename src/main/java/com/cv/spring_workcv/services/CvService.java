@@ -24,4 +24,6 @@ public interface CvService {
     Cv lastCv();
 
     void deleteCv(int id);
+
+    void deleteCvByUser(User user);
 }

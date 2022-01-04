@@ -55,29 +55,59 @@ public class ApplyPostController {
         if(check){
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            System.out.println(file);
             String idRecuitement = request.getParameter("idRe");
             String text = request.getParameter("text");
             Recruitment recruitment = recruitmentService.getRecruitmentById(Integer.parseInt(idRecuitement));
             ApplyPost applyPostCheck = applyPostService.findApplyPostByRecruitmentAndUser(recruitment,user);
-            String name =  FileUtil.uploadPdf(request,file);
+            String name = "";
+            name =  FileUtil.uploadPdf(request,file);
+
             if (Objects.nonNull(applyPostCheck))  {
                 return "exist";
             }else{
                 ApplyPost applyPost = new ApplyPost();
-                applyPost.setUser(user);
-                applyPost.setText(text);
-                applyPost.setStatus(0);
-                applyPost.setCreatedAt(java.time.LocalDate.now().toString());
-                applyPost.setRecruitment(recruitment);
-                applyPost.setNameCv(name);
-                applyPostService.save(applyPost);
+                    applyPost.setUser(user);
+                    applyPost.setText(text);
+                    applyPost.setStatus(0);
+                    applyPost.setCreatedAt(java.time.LocalDate.now().toString());
+                    applyPost.setRecruitment(recruitment);
+                    applyPost.setNameCv(name);
+                    applyPostService.save(applyPost);
                 return "true";
             }
         }else{
             return "false";
         }
     }
+    @PostMapping("/apply-job1")
+    public @ResponseBody String apply1(HttpServletRequest request){
+        boolean check = middleware.middleware(request);
+        if(check){
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute(CommonConstants.SESSION_USER);
+            String idRecuitement = request.getParameter("idRe");
+            String text = request.getParameter("text");
+            Recruitment recruitment = recruitmentService.getRecruitmentById(Integer.parseInt(idRecuitement));
+            ApplyPost applyPostCheck = applyPostService.findApplyPostByRecruitmentAndUser(recruitment,user);
 
+            if (Objects.nonNull(applyPostCheck))  {
+                return "exist";
+            }else{
+                ApplyPost applyPost = new ApplyPost();
+                    applyPost.setNameCv(user.getCv().getFileName());
+                    applyPost.setUser(user);
+                    applyPost.setText(text);
+                    applyPost.setStatus(0);
+                    applyPost.setRecruitment(recruitment);
+                    applyPost.setCreatedAt(java.time.LocalDate.now().toString());
+                    applyPostService.save(applyPost);
+                return "true";
+            }
+        }else{
+            return "false";
+        }
+    }
     @GetMapping("/approve/{idUser}/{idRe}")
     public ModelAndView approve(@PathVariable int idUser,@PathVariable int idRe, RedirectAttributes rd){
         String url = "redirect:/recruitment/detail/"+idRe;
