@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +48,16 @@ public class HomeController {
         List<User> users = userService.getAll();
         List<Recruitment> recruitments = recruitmentService.getAll(sort);
         List<Object[]> companies = companyService.getAll();
+        //gg
+        LocalDate now = java.time.LocalDate.now();
+        for(int i = 0; i < recruitments.size() ;i++){
+            if(LocalDate.parse(recruitments.get(i).getDeadline()).compareTo(now) < 0){
+                recruitments.remove(i);
+            }
+        }
+        //gg
         List<Recruitment> recruitmentList = recruitments.stream().limit(10).collect(Collectors.toList());
+
         List<Category> categories = catergoryService.getAll(sortCategory).stream().collect(Collectors.toList());
         List<User> listCandidate  = (List<User>) users.stream().filter(x -> x.getRole().getId() == 1).collect(Collectors.toList());
         List<User> listCompany  = (List<User>) users.stream().filter(x -> x.getRole().getId() == 2).collect(Collectors.toList());
