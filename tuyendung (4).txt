@@ -30,20 +30,14 @@ Thời gian:
 Giữa tháng 1 sẽ có 1 buổi thông nữa nên tới đó sẽ giao phần tiếp theo
 Sau tết mới bảo vệ nên tới đó tính phần cuối
 
-chọn ảnh- hiển thị trong profile công ty
-xử lý khi hết hạn ứng tuyển(done, bỏ thêm mấy chỗ khác)
-gửi cv khi apply - 2 option: 1 cũ, 2 là upload mới
-bắt ràng buộc định dạng pdf khi upload cv
+
+
 chức năng tìm việc (tìm kiếm theo công việc, ứng viên)- thêm tìm kiếm theo địa điểm(done)
 xóa giao diện(done)
 đưa khung tìm kiếm vào Công việc(done)
 danh sách công việc của cty đã theo dõi(done)
-tìm kiếm có dấu bị
 chọn ảnh- hiển thị trong profile công ty(done)
-xử lý khi hết hạn ứng tuyển
-gửi cv khi apply - 2 option: 1 cũ, 2 là upload mới
+xử lý khi hết hạn ứng tuyển(done)
+gửi cv khi apply - 2 option: 1 cũ, 2 là upload mới(done)
 bắt ràng buộc định dạng pdf khi upload cv(done)
-chức năng tìm việc (tìm kiếm theo công việc, ứng viên)- thêm tìm kiếm theo địa điểm
-xóa giao diện(done)
-đưa khung tìm kiếm vào Công việc
-danh sách công việc của cty đã theo dõi
+
