@@ -237,7 +237,7 @@
             <div class="col-lg-9 pr-lg-5">
                 <div class="row justify-content-center pb-3">
                     <div class="col-md-12 heading-section ">
-                        <span class="subheading">CÔNG VIỆC ĐƯỢC THÊM GẦN ĐÂY</span>
+                        <span class="subheading">CÔNG VIỆC ĐƯỢC NHIỀU NGƯỜI ỨNG TUYỂN</span>
                         <h2 class="mb-4">Các bài đăng về việc làm nổi bật</h2>
 
                     </div>
@@ -341,7 +341,7 @@
                 <th:block th:each="companies : ${companies}">
                 <div class="sidebar-box">
                     <div class="">
-                        <a th:href="${'/user/detail-company/'}+${companies[0]}" class="company-wrap"><img th:src="${'/resources/uploads/'} + ${companies[2]}" class="img-fluid" alt="Colorlib Free Template"></a>
+                        <a th:href="${'/user/detail-company/'}+${companies[0]}" class="company-wrap"><img th:src="${companies[2]}" class="img-fluid" alt="Colorlib Free Template"></a>
                         <div class="text p-3">
                             <h3><a th:href="${'/user/detail-company/'}+${companies[0]}" th:text="${companies[1]}"></a></h3>
                             <p><span class="number" style="color: black" th:text="${companies[3]}"></span> <span>Vị trí ứng tuyển</span></p>

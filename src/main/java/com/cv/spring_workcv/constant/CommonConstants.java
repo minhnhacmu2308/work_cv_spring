@@ -31,7 +31,7 @@ public class CommonConstants {
     public static final String MY_EMAIL = "websitedoan@gmail.com";
 
     // Replace password!!
-    public static final String MY_PASSWORD = "passnhutren1234";
+    public static final String MY_PASSWORD = "nljkgnluuxfegxnu";
 
     public static final String CONFIRM_ACCOUNT = "confirm_account";
     public static final String CONFIRM_AWAIT = "confirm_await";
